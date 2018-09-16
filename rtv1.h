@@ -13,10 +13,73 @@
 #ifndef RTV1_H
 # define RTV1_H
 
+# include "libft/hdr/libft.h"
+# include "libft/hdr/libft_algebra.h"
+# include "mlx_event_lin.h"
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <stdio.h>
+# include <mlx.h>
+# include <errno.h>
+
 # define REN_W		480
 # define REN_H		360
 
-# define BG_COLOR	0x00BB0088
+# define BLACK			0x000000
+# define RED			0xFF0000
+# define GREEN			0x00FF00
+# define BLUE			0x0000FF
+# define WHITE			0xFFFFFF
+# define DBG_COLOR		0x5500BB
+# define BG_COLOR		0x00BB88
+
+
+typedef struct	s_point
+{
+	int		x;
+	int		y;
+}				t_point;
+
+/*
+** world_pos		: cartesian coordinate of camera in world
+** reltv_pos		: cartesian coordinate of camera with anchor as center
+** polar_pos		: zoom/radius, longitude, latitude relative to anchor
+** anchor			: origin of polar_pos and reltv_pos
+** axis_x			: right vector of cam
+** axis_y			: up vector of cam
+** axis_z			: "forward" vector of cam,  input eye vector
+** hrz_fov			: field-of-view horizontal angle in radians
+** w_to_v			: the camera's world-to-view matrix
+*/
+typedef struct	s_camera
+{
+	t_vec_3d		world_pos;
+//	t_vec_3d		reltv_pos;
+	t_vec_3d		polar_pos;
+	t_vec_3d		anchor;
+	t_vec_3d		axis_x;
+	t_vec_3d		axis_y;
+	t_vec_3d		axis_z;
+	t_float			hrz_fov;
+	t_mat_4b4		w_to_v;
+}				t_camera;
+
+typedef struct	s_control
+{
+	void			*mlx_ptr;
+	void			*win_ptr;
+	void			*img_ptr;
+	int				img_bpp;
+	int				img_bpl;
+	int				img_bytelen;
+	int				img_pixel_nb;
+	int				endian;
+	char			*img_data;
+	t_camera		cam;
+	int				debug;
+	t_point			mouse;
+}				t_control;
 
 typedef struct	s_ray
 {
@@ -38,11 +101,6 @@ typedef struct	s_sphere
 	t_float		albedo;
 }				t_sphere;
 
-typedef struct	s_control
-{
-	t_vec_3d	cam_pos;
-	t_float		hrz_fov;
-}				t_control;
 /*
 FOV is the angle centered on the camera, and that spans 0 to width - 1
 	horizontally.
@@ -64,5 +122,40 @@ a contact point on a sphere is lighted according to the formula (albedo * <N, L>
 */
 
 
+/*
+** image_utils.c
+*/
+int				point_in_bounds(int x, int y);
+void			mlximg_setpixel(t_control *ctrl, int color, int x, int y);
+void			mlximg_fill(t_control *ctrl, t_u32 val);
+void			mlximg_clear(t_control *ctrl);
+
+/*
+** camera.c
+*/
+t_camera		init_cam(t_vec_3d polar_cam_pos);
+void			cam_to_mat(t_mat_4b4 result, t_camera const cam);
+
+/*
+** coordinates.c
+*/
+void			vec3_polar_to_cartesian(t_vec_3d result, t_vec_3d const src);
+void			vec3_cartesian_to_polar(t_vec_3d result, t_vec_3d const src);
+
+
+/*
+** event_key.c
+*/
+int				handle_key(int key, void *param);
+
+
+
+
+void			exit_error(char *e_msg, int e_no);
+
+void			cast_rays(t_control *ctrl, t_vec_3d origin,
+							t_sphere *sphr_lst, int len);
+
+void			render(t_control *ctrl);
 
 #endif
