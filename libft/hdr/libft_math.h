@@ -33,6 +33,7 @@
 # define HALF_PI		0x1.921fb54442d18p+0
 # define PI				0x1.921fb54442d18p+1
 # define TAU 			0x1.921fb54442d18p+2
+# define INV_PI			0x1.45f306dc9c883p-2
 
 /*
 ** # define ABS(X) (X < 0 ? -X : X)
@@ -68,6 +69,16 @@ t_u64					ft_umax(t_u64 a, t_u64 b);
 ** Returns min of a and b, unsigned.
 */
 t_u64					ft_umin(t_u64 a, t_u64 b);
+
+/*
+** Returns max of a and b, floating point.
+*/
+t_float					ft_fmax(t_float a, t_float b);
+
+/*
+** Returns min of a and b, floating point.
+*/
+t_float					ft_fmin(t_float a, t_float b);
 
 /*
 ** Returns closest int closer to -inf than lf. Prints error messages in case of
@@ -234,7 +245,7 @@ int						ft_in_base(char c, char const *base);
 /*
 ** Returns an approximation of the inverse square root of a number.
 ** More precision can be had with 1./sqrt() if necessary.
+**
+** t_f32					ft_fast_inv_sqrt32(t_f32 const f);
 */
-t_f32					ft_fast_inv_sqrt32(t_f32 const f);
-
 #endif

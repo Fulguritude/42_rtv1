@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2018/08/04 14:49:40 by fulguritu        ###   ########.fr        #
+#    Updated: 2018/09/18 19:30:33 by fulguritu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -281,6 +281,8 @@ SRC_MATH_OP :=	ft_abs.c					\
 				ft_min.c					\
 				ft_umax.c					\
 				ft_umin.c					\
+				ft_fmax.c					\
+				ft_fmin.c					\
 				ft_floor.c					\
 				ft_ceil.c					\
 				ft_ipowi.c					\

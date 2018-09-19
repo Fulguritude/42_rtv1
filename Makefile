@@ -44,7 +44,10 @@ HDRS	:=	$(NAME).h
 SRCS	:=	camera.c		\
 			coordinates.c	\
 			event_key.c		\
-			image_utils.c
+			image_utils.c	\
+			rays.c			\
+			intersect.c		\
+			render.c
 			
 
 OBJS	:=	$(SRCS:.c=.o)

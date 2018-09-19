@@ -71,8 +71,6 @@ static int	handle_key_window(int key, t_control *ctrl)
 }
 #endif
 
-
-
 int			handle_key(int key, void *param)
 {
 	t_control			*ctrl;
@@ -90,14 +88,14 @@ int			handle_key(int key, void *param)
 		ctrl->cam.polar_pos[1] -= 0.2;
 	else if (key == KEY_RIGHT)
 		ctrl->cam.polar_pos[1] += 0.2;
-	else if (key == KEY_DOWN && ctrl->cam.polar_pos[2] - 0.1 > 0)
+	else if (key == KEY_DOWN && ctrl->cam.polar_pos[2] - 0.1 > -HALF_PI)
 		ctrl->cam.polar_pos[2] -= 0.1;
-	else if (key == KEY_UP && ctrl->cam.polar_pos[2] + 0.1 < PI)
+	else if (key == KEY_UP && ctrl->cam.polar_pos[2] + 0.1 < HALF_PI)
 		ctrl->cam.polar_pos[2] += 0.1;
+	else
+		return (1);
 //	else if (key == KEY_SPACE)
-//		ctrl->fractol.is_static = !(ctrl->fractol.is_static);
 //	else if (key == KEY_HOME)
-//		ctrl->show_m_s = !(ctrl->show_m_s);
 //	else if (!has_changed)
 //		return (1);
 	render(ctrl);
