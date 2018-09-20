@@ -89,13 +89,15 @@ void			render(t_control *ctrl)
 	test.objs[4].data.sphere.color = DBG_COLOR;// / 4 * 3;
 	vec3_set(test.objs[4].data.sphere.albedo, 1., 0., 1.);
 
+/*
 	for (int i = 0; i < test.len; ++i)
 		if (test.objs[i].type == sphere)
 			sphere_wtov(&(test.objs[i].data.sphere), ctrl->cam);
 		else
 			exit_error("render: malformed object", 0);
+*/
 
-	vec3_set(spot.origin, 1., 10., 0.);
+	vec3_set(spot.origin, 1., 10., 15.);
 	spot.intensity = 500000.;
 
 	ctrl->spot = spot;

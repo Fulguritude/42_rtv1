@@ -16,9 +16,11 @@
 
 /*
 ** Should sphr.center in world_pos or view_pos ?
+**
+** Replace with a t_vec3 for coefs ?
 */
 t_bool		intersect_ray_sphere(t_vec_3d contact, t_vec_3d normal,
-								t_ray const ray, t_sphere const sphr)
+								t_ray ray, t_sphere const sphr)
 {
 	t_float		delta;
 	t_float		b;
@@ -31,30 +33,28 @@ t_bool		intersect_ray_sphere(t_vec_3d contact, t_vec_3d normal,
 	b = 2 * vec3_dot(ray.dir, orig_to_sphr);
 	c = vec3_eucl_quadnorm(orig_to_sphr) - sphr.radius * sphr.radius;
 	delta = b * b - 4 * c;
-	if (delta < 0)
+	if (delta < 0.)
 		return (FALSE);
 	delta = sqrt(delta);
 	root1 = (-b + delta) * 0.5;
 	root2 = (-b - delta) * 0.5;
-	if (root1 <= 0 || root2 <= 0)
+	if (root1 <= 0. || root2 <= 0.)
 		return (FALSE);
-	if (root1 < root2)
-		 vec3_scale(contact, root1, ray.dir);
-	else
-		 vec3_scale(contact, root2, ray.dir);
-	vec3_add(contact, contact, ray.origin);
+	ray.t = ft_fmin(root1, root2);
+	vec3_scale(contact, ray.t, ray.dir); //
+	vec3_add(contact, contact, ray.origin); //pos relative to ray.origin, which itself is in world_pos
 	vec3_sub(normal, contact, sphr.center);
 	vec3_scale(normal, 1. / sphr.radius, normal);
 	return (TRUE);
 }
 
-void		sphere_wtov(t_sphere *sphr, t_camera const cam)
+void		sphere_wtoc(t_sphere *sphr, t_camera const cam)
 {
 	t_vec_4d	tmp;
 
 	vec3_cpy(tmp, sphr->center);
 	tmp[3] = 1.;
-	mat44_app_vec(tmp, cam.w_to_v, tmp);
+	mat44_app_vec(tmp, cam.w_to_c, tmp);
 	vec3_cpy(sphr->center, tmp);
 }
 

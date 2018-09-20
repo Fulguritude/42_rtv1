@@ -12,12 +12,13 @@
 
 #include "rtv1.h"
 
-static void		cam_to_mat(t_mat_4b4 result, t_camera const cam)
+static void		build_cam_matrices(t_camera *cam)
 {
 	t_mat_3b3	tmp;
 	t_vec_3d	v;
+	t_mat_4b4	result;
 
-	mat33_set(tmp, cam.axis_x, cam.axis_y, cam.axis_z);
+	mat33_set(tmp, cam->axis_x, cam->axis_y, cam->axis_z);
 	result[0] = tmp[0];
 	result[1] = tmp[1];
 	result[2] = tmp[2];
@@ -30,12 +31,14 @@ static void		cam_to_mat(t_mat_4b4 result, t_camera const cam)
 	result[9] = tmp[7];
 	result[10] = tmp[8];
 	result[11] = 0.;
-	vec3_sub(v, cam.world_pos, cam.anchor); //TODO maybe needs fixing
+	vec3_sub(v, cam->world_pos, cam->anchor); //TODO maybe needs fixing
 	result[12] = v[0];
 	result[13] = v[1];
 	result[14] = v[2];
 	result[15] = 1.;
+	ft_memcpy(cam->c_to_w, result, T_MAT44_SIZE);
 	mat44_inv(result, result);
+	ft_memcpy(cam->w_to_c, result, T_MAT44_SIZE);
 }
 
 t_camera		init_cam(t_vec_3d polar_cam_pos)
@@ -61,14 +64,19 @@ result.axis_y[0], result.axis_y[1], result.axis_y[2],
 result.axis_z[0], result.axis_z[1], result.axis_z[2]);
 
 	result.hrz_fov = 0.8;
-	cam_to_mat(result.w_to_v, result);
+	build_cam_matrices(&result);
 
+printf("c_to_w:\n\tx: (%.5f, %.5f, %.5f, %.5f)\n\ty: (%.5f, %.5f, %.5f, %.5f)\n\tz: (%.5f, %.5f, %.5f, %.5f)\n\tt: (%.5f, %.5f, %.5f, %.5f)\n\n",
+result.c_to_w[0], result.c_to_w[1], result.c_to_w[2], result.c_to_w[3],
+result.c_to_w[4], result.c_to_w[5], result.c_to_w[6], result.c_to_w[7],
+result.c_to_w[8], result.c_to_w[9], result.c_to_w[10], result.c_to_w[11],
+result.c_to_w[12], result.c_to_w[13], result.c_to_w[14], result.c_to_w[15]);
 
-printf("inv_cam:\n\tx: (%.5f, %.5f, %.5f, %.5f)\n\ty: (%.5f, %.5f, %.5f, %.5f)\n\tz: (%.5f, %.5f, %.5f, %.5f)\n\tt: (%.5f, %.5f, %.5f, %.5f)\n\n",
-result.w_to_v[0], result.w_to_v[1], result.w_to_v[2], result.w_to_v[3],
-result.w_to_v[4], result.w_to_v[5], result.w_to_v[6], result.w_to_v[7],
-result.w_to_v[8], result.w_to_v[9], result.w_to_v[10], result.w_to_v[11],
-result.w_to_v[12], result.w_to_v[13], result.w_to_v[14], result.w_to_v[15]);
+printf("w_to_c:\n\tx: (%.5f, %.5f, %.5f, %.5f)\n\ty: (%.5f, %.5f, %.5f, %.5f)\n\tz: (%.5f, %.5f, %.5f, %.5f)\n\tt: (%.5f, %.5f, %.5f, %.5f)\n\n",
+result.w_to_c[0], result.w_to_c[1], result.w_to_c[2], result.w_to_c[3],
+result.w_to_c[4], result.w_to_c[5], result.w_to_c[6], result.w_to_c[7],
+result.w_to_c[8], result.w_to_c[9], result.w_to_c[10], result.w_to_c[11],
+result.w_to_c[12], result.w_to_c[13], result.w_to_c[14], result.w_to_c[15]);
 
 	return (result);
 }

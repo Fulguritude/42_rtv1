@@ -19,7 +19,7 @@
 */
 
 static t_bool		ray_handle_sphere(t_control *ctrl, t_ray const ray
-								t_sphere sphr, t_float *prox_to_cam)
+								t_sphere sphr, t_float *ray.t)
 {
 	t_vec_3d	contact_pt;
 	t_vec_3d	contact_nrml;
@@ -30,9 +30,9 @@ static t_bool		ray_handle_sphere(t_control *ctrl, t_ray const ray
 	if (!(has_inter = intersect_ray_sphere(contact_pt, contact_nrml, ray, sphr))
 		return (FALSE);
 	tmp = vec3_eucl_quaddist(contact_pt, ray.origin);
-	if (has_inter && tmp < *prox_to_cam) //one line to gain with double if assignment
+	if (has_inter && tmp < *ray.t) //one line to gain with double if assignment
 	{
-		*prox_to_cam = tmp;
+		*ray.t = tmp;
 		vec3_sub(contact_dirlgt, ctrl->spot.origin, contact_pt);
 		tmp = 1. / vec3_quadnorm(contact_dirlgt);
 		vec3_nrmlz(contact_dirlgt, contact_dirlgt); //vec3_scale(sqrt(tmp), contact_dirlgt); should also work logically
@@ -53,15 +53,15 @@ static t_bool	cast_ray_to_objs(t_control *ctrl, t_objlst const ol,
 {
 	t_bool		has_inter;
 	int			obj_k;
-	t_float		prox_to_cam;
+	t_float		ray.t;
 
 	obj_k = 0;
 	has_inter = FALSE;
-	prox_to_cam = 1. / 0.;
+	ray.t = 1. / 0.;
 	while (obj_k < ol.len)
 	{
 		if (ol.objs[obj_k].type == sphere)
-			ray_handle_sphere(ctrl, ray, ol.objs[obj_k].data.sphere, &prox_to_cam);
+			ray_handle_sphere(ctrl, ray, ol.objs[obj_k].data.sphere, &ray.t);
 		else if (ol.objs[obj_k].type != sphere)
 			exit_error("cast_ray_to_objs: malformed object.", 0);
 		++obj_k;
@@ -101,27 +101,25 @@ static t_bool	cast_shadow_ray()
 
 
 static t_bool	cast_ray_to_objs(t_control *ctrl, t_objlst const ol,
-								t_ray const ray, int pixel) //maybe make pixel an int* and rm ctrl for subfunction
+								t_ray ray, int pixel) //maybe make pixel an int* and rm ctrl for subfunction
 {
 	t_bool		has_inter;
 	t_vec_3d	contact_pt;
 	t_vec_3d	contact_nrml;
 	t_vec_3d	contact_dirlgt;
-	t_float		prox_to_cam;
 	t_float		tmp;
 	t_vec_3d	lum;
 	int			obj_k;
 
 	obj_k = 0;
 	has_inter = FALSE;
-	prox_to_cam = 1. / 0.;
 	while (obj_k < ol.len)
 	{
 		if (ol.objs[obj_k].type == sphere
 		&& (has_inter = intersect_ray_sphere(contact_pt, contact_nrml, ray, ol.objs[obj_k].data.sphere))
-		&& (tmp = vec3_eucl_quaddist(contact_pt, ray.origin)) < prox_to_cam)
+		&& (tmp = vec3_eucl_quaddist(contact_pt, ray.origin)) < ray.t)
 		{
-			prox_to_cam = tmp;
+			ray.t = tmp;
 			vec3_sub(contact_dirlgt, ctrl->spot.origin, contact_pt);
 			tmp = 1. / vec3_eucl_quadnorm(contact_dirlgt);
 			vec3_eucl_nrmlz(contact_dirlgt, contact_dirlgt);
@@ -138,6 +136,12 @@ static t_bool	cast_ray_to_objs(t_control *ctrl, t_objlst const ol,
 	return (has_inter);
 }
 
+/*
+** Rays are defined in Cam Space then sent to World Space.
+**
+** Intersections should be tested for in world space
+*/
+
 void			cast_rays(t_control *ctrl, t_objlst const objlst)
 {
 	int			i;
@@ -153,10 +157,11 @@ void			cast_rays(t_control *ctrl, t_objlst const objlst)
 		j = 0;
 		while (j < REN_W)
 		{
-			vec3_cpy(ray.origin, (t_vec_3d){0., 0., 0.});//ctrl->cam.world_pos);
+			vec3_cpy(ray.origin, (t_float *)ctrl->cam.c_to_w + 12);//ctrl->cam.world_pos);
+			ray.t = 1. / 0.;
 			vec3_set(tmp, j - REN_W / 2, i - REN_H / 2, fov_val);
 			tmp[3] = 1.;
-			mat44_app_vec(tmp, ctrl->cam.w_to_v, tmp);
+			mat44_app_vec(tmp, ctrl->cam.c_to_w, tmp);
 			//vec3_add(tmp, tmp, (t_float *)ctrl->cam.w_to_v + 12);
 //printf("ray %3d : origin=(%.5g, %.5g, %.5g), dir=(%.5g, %.5g, %.5g)\n", i * REN_W + j, ray.origin[0], ray.origin[1], ray.origin[2], ray.dir[0], ray.dir[1], ray.dir[2]);
 			vec3_eucl_nrmlz(ray.dir, tmp);

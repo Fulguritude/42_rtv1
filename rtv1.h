@@ -69,7 +69,8 @@ typedef struct	s_camera
 	t_vec_3d		axis_y;
 	t_vec_3d		axis_z;
 	t_float			hrz_fov;
-	t_mat_4b4		w_to_v;
+	t_mat_4b4		c_to_w;
+	t_mat_4b4		w_to_c;
 }				t_camera;
 
 /*
@@ -79,6 +80,7 @@ typedef struct	s_ray
 {
 	t_vec_3d	origin;
 	t_vec_3d	dir; //unit vector
+	t_float		t;
 }				t_ray;
 
 typedef struct	s_light_src
