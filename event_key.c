@@ -88,9 +88,9 @@ int			handle_key(int key, void *param)
 		ctrl->cam.polar_pos[1] -= 0.2;
 	else if (key == KEY_RIGHT)
 		ctrl->cam.polar_pos[1] += 0.2;
-	else if (key == KEY_DOWN && ctrl->cam.polar_pos[2] - 0.1 > -HALF_PI)
+	else if (key == KEY_DOWN && ctrl->cam.polar_pos[2] - 0.1 > -0.00001)
 		ctrl->cam.polar_pos[2] -= 0.1;
-	else if (key == KEY_UP && ctrl->cam.polar_pos[2] + 0.1 < HALF_PI)
+	else if (key == KEY_UP && ctrl->cam.polar_pos[2] + 0.1 < PI + 0.00001)
 		ctrl->cam.polar_pos[2] += 0.1;
 	else
 		return (1);

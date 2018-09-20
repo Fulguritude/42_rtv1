@@ -81,7 +81,7 @@ int		main(void)
 	t_control	ctrl;
 
 	init_mlx(&ctrl);
-	vec3_set(ctrl.cam.polar_pos, 10., 0., 0.); // 2., 0., HALF_PI)
+	vec3_set(ctrl.cam.polar_pos, 2., 0., HALF_PI);
 
 
 	mlx_key_hook(ctrl.win_ptr, handle_key, &ctrl);

@@ -55,7 +55,7 @@ t_camera		init_cam(t_vec_3d polar_cam_pos)
 	vec3_cross(result.axis_x, result.axis_y, result.axis_z);
 	vec3_eucl_nrmlz(result.axis_x, result.axis_x);
 	vec3_cross(result.axis_y, result.axis_x, result.axis_z);
-//	vec3_eucl_nrmlz(result.axis_x, result.axis_x);
+//	vec3_eucl_nrmlz(result.axis_y, result.axis_y);
 //	vec3_scale(result.axis_x, 1., result.axis_x);
 
 printf("cam:\n\tx: (%.5f, %.5f, %.5f)\n\ty: (%.5f, %.5f, %.5f)\n\tz: (%.5f, %.5f, %.5f)\n\n",

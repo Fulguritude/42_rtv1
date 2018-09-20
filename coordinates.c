@@ -19,9 +19,9 @@ void		vec3_polar_to_cartesian(t_vec_3d result, t_vec_3d const src)
 
 	r = src[0];
 	sin_lat = sin(src[2]);
-	result[0] = r * cos(src[1]) * sin_lat;
-	result[1] = r * sin(src[1]) * sin_lat;
-	result[2] = r * cos(src[2]);
+	result[0] = r * sin_lat * cos(src[1]);
+	result[2] = r * sin_lat * sin(src[1]);
+	result[1] = r * cos(src[2]);
 }
 
 /*
