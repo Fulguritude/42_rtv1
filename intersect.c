@@ -18,9 +18,11 @@
 ** Should sphr.center in world_pos or view_pos ?
 **
 ** Replace with a t_vec3 for coefs ?
+**
+** replace everything with ray as a pointer with t = inf at first, and return
+** false if the intersection is behind (o + t*dir)  ? 
 */
-t_bool		intersect_ray_sphere(t_vec_3d contact, t_vec_3d normal,
-								t_ray ray, t_sphere const sphr)
+t_bool		intersect_ray_sphere(t_ray *ray, t_sphere const sphr)
 {
 	t_float		delta;
 	t_float		b;
@@ -29,8 +31,8 @@ t_bool		intersect_ray_sphere(t_vec_3d contact, t_vec_3d normal,
 	t_float		root2;
 	t_vec_3d	orig_to_sphr;
 
-	vec3_sub(orig_to_sphr, ray.origin, sphr.center);
-	b = 2 * vec3_dot(ray.dir, orig_to_sphr);
+	vec3_sub(orig_to_sphr, ray->origin, sphr.center);
+	b = 2 * vec3_dot(ray->dir, orig_to_sphr);
 	c = vec3_eucl_quadnorm(orig_to_sphr) - sphr.radius * sphr.radius;
 	delta = b * b - 4 * c;
 	if (delta < 0.)
@@ -38,14 +40,19 @@ t_bool		intersect_ray_sphere(t_vec_3d contact, t_vec_3d normal,
 	delta = sqrt(delta);
 	root1 = (-b + delta) * 0.5;
 	root2 = (-b - delta) * 0.5;
-	if (root1 <= 0. || root2 <= 0.)
+	if (root1 <= 0. || root2 <= 0. || (root1 > ray->t && root2 > ray->t))
 		return (FALSE);
-	ray.t = ft_fmin(root1, root2);
-	vec3_scale(contact, ray.t, ray.dir); //
-	vec3_add(contact, contact, ray.origin); //pos relative to ray.origin, which itself is in world_pos
+	ray->t = ft_fmin(root1, root2);
+	return (TRUE);
+}
+
+void		sphere_get_ctt_n_nrml(t_vec_3d contact, t_vec_3d normal,
+									t_ray const ray, t_sphere const sphr)
+{
+	vec3_scale(contact, ray.t, ray.dir);
+	vec3_add(contact, contact, ray.origin); //pos relative to ray->origin, which itself should be in world_pos
 	vec3_sub(normal, contact, sphr.center);
 	vec3_scale(normal, 1. / sphr.radius, normal);
-	return (TRUE);
 }
 
 void		sphere_wtoc(t_sphere *sphr, t_camera const cam)

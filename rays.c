@@ -116,17 +116,19 @@ static t_bool	cast_ray_to_objs(t_control *ctrl, t_objlst const ol,
 	while (obj_k < ol.len)
 	{
 		if (ol.objs[obj_k].type == sphere
-		&& (has_inter = intersect_ray_sphere(contact_pt, contact_nrml, ray, ol.objs[obj_k].data.sphere))
-		&& (tmp = vec3_eucl_quaddist(contact_pt, ray.origin)) < ray.t)
+		&& (has_inter = intersect_ray_sphere(&ray, ol.objs[obj_k].data.sphere)))
 		{
-			ray.t = tmp;
+			sphere_get_ctt_n_nrml(contact_pt, contact_nrml, ray, ol.objs[obj_k].data.sphere);
 			vec3_sub(contact_dirlgt, ctrl->spot.origin, contact_pt);
-			tmp = 1. / vec3_eucl_quadnorm(contact_dirlgt);
-			vec3_eucl_nrmlz(contact_dirlgt, contact_dirlgt);
-				//vec3_scale(sqrt(tmp), contact_dirlgt); should also work logically
-			vec3_scale(lum,
-					INV_PI * ctrl->spot.intensity * ft_fmax(0., vec3_dot(contact_nrml, contact_dirlgt)) * tmp,
-					ol.objs[obj_k].data.sphere.albedo);
+			tmp = vec3_eucl_quadnorm(contact_dirlgt);
+//
+			tmp = 1. / tmp;
+			vec3_scale(contact_dirlgt, sqrt(tmp), contact_dirlgt); ////vec3_eucl_nrmlz(contact_dirlgt, contact_dirlgt); is the costlier version
+			
+			vec3_scale(
+				lum,
+				INV_PI * ctrl->spot.intensity * ft_fmax(0., vec3_dot(contact_nrml, contact_dirlgt)) * tmp,
+				ol.objs[obj_k].data.sphere.albedo);
 			((t_u32 *)ctrl->img_data)[pixel] = color_app_lum(lum);
 		}
 		else if (ol.objs[obj_k].type != sphere)
@@ -162,8 +164,6 @@ void			cast_rays(t_control *ctrl, t_objlst const objlst)
 			vec3_set(tmp, j - REN_W / 2, i - REN_H / 2, fov_val);
 			tmp[3] = 1.;
 			mat44_app_vec(tmp, ctrl->cam.c_to_w, tmp);
-			//vec3_add(tmp, tmp, (t_float *)ctrl->cam.w_to_v + 12);
-//printf("ray %3d : origin=(%.5g, %.5g, %.5g), dir=(%.5g, %.5g, %.5g)\n", i * REN_W + j, ray.origin[0], ray.origin[1], ray.origin[2], ray.dir[0], ray.dir[1], ray.dir[2]);
 			vec3_eucl_nrmlz(ray.dir, tmp);
 			cast_ray_to_objs(ctrl, objlst, ray, i * REN_W + j);
 			++j;

@@ -75,11 +75,14 @@ typedef struct	s_camera
 
 /*
 ** RAYS AND SHADING
+**
+** Rays can be interpreted in any space.
+** origin + scale(t, dir) = end of the current ray
 */
 typedef struct	s_ray
 {
 	t_vec_3d	origin;
-	t_vec_3d	dir; //unit vector
+	t_vec_3d	dir;
 	t_float		t;
 }				t_ray;
 
@@ -229,10 +232,9 @@ int				handle_key(int key, void *param);
 /*
 ** intersect.c
 */
-t_bool			intersect_ray_sphere(t_vec_3d contact, t_vec_3d normal,
-							t_ray const ray,
-							t_sphere const sphr);
-
+t_bool			intersect_ray_sphere(t_ray *ray, t_sphere const sphr);
+void			sphere_get_ctt_n_nrml(t_vec_3d contact, t_vec_3d normal,
+									t_ray const ray, t_sphere const sphr);
 
 void		sphere_wtov(t_sphere *sphr, t_camera const cam);
 
