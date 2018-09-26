@@ -38,7 +38,7 @@ endif
 HDRDIR	:=	./
 LFTDIR	:=	./libft/
 TSTDIR	:=	./tests/
-SRCDIR	:=	./
+SRCDIR	:=	./src/
 
 HDRS	:=	$(NAME).h
 SRCS	:=	camera.c		\
@@ -47,7 +47,8 @@ SRCS	:=	camera.c		\
 			image_utils.c	\
 			rays.c			\
 			intersect.c		\
-			render.c
+			render.c		\
+			objects.c
 			
 
 OBJS	:=	$(SRCS:.c=.o)

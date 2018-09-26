@@ -50,7 +50,7 @@ void			mat33_inv(t_mat_3b3 result, t_mat_3b3 const m)
 
 	if ((det = mat33_det(m)) == 0.)
 	{
-		write(2, "non invertible matrix error\n", 28);
+		write(2, "mat33_inv: non invertible matrix error\n", 28);
 		ft_bzero(result, T_MAT33_SIZE);
 		return ;
 	}
@@ -67,20 +67,33 @@ void			mat33_inv(t_mat_3b3 result, t_mat_3b3 const m)
 	mat33_scale(result, 1. / det, result);
 }
 
-void			mat33_transpose(t_mat_3b3 result, t_mat_3b3 const src)
+void			mat33_rot(t_mat_3b3 result, t_float theta, int_fast8_t axis)
 {
-	t_float		tmp;
+	t_float		c_th;
+	t_float		s_th;
 
-	tmp = src[1];
-	result[1] = src[3];
-	result[3] = tmp;
-	tmp = src[2];
-	result[2] = src[6];
-	result[6] = tmp;
-	tmp = src[7];
-	result[7] = src[5];
-	result[5] = tmp;
-	result[0] = src[0];
-	result[4] = src[4];
-	result[8] = src[8];
+	if (axis < 0 || axis > 2)
+		write(2, "mat33_rot: axis is not coherent with 3D...", 43);
+	c_th = cosf(theta);
+	s_th = sinf(theta);
+	if (axis == 0)
+		mat33_set(result, (t_vec_3d){1., 0., 0.},
+						(t_vec_3d){0., c_th, s_th},
+						(t_vec_3d){0., -s_th, c_th});
+	else if (axis == 1)
+		mat33_set(result, (t_vec_3d){c_th, 0., -s_th},
+						(t_vec_3d){0., 1., 0.},
+						(t_vec_3d){s_th, 0., c_th});
+	else
+		mat33_set(result, (t_vec_3d){c_th, s_th, 0.},
+						(t_vec_3d){-s_th, c_th, 0.},
+						(t_vec_3d){0., 0., 1.});
+}
+
+void			mat33_set_diagmat(t_mat_3b3 result, t_vec_3d const coefs)
+{
+	ft_bzero(result, T_MAT33_SIZE);
+	result[0] = coefs[0];
+	result[4] = coefs[1];
+	result[8] = coefs[2];
 }

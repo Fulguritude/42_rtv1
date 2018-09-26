@@ -106,6 +106,8 @@ t_float			vec3_eucl_quaddist(t_vec_3d const v1, t_vec_3d const v2);
 */
 void			mat33_set(t_mat_3b3 result, t_vec_3d const v0,
 							t_vec_3d const v1, t_vec_3d const v2);
+void			mat33_set_diagmat(t_mat_3b3 result,
+							t_vec_3d const coefs);
 void			mat33_add(t_mat_3b3 result,
 							t_mat_3b3 const ma, t_mat_3b3 const mb);
 void			mat33_scale(t_mat_3b3 result, t_float const s,
@@ -117,10 +119,15 @@ void			mat33_mul(t_mat_3b3 result,
 t_float			mat33_det(t_mat_3b3 const m);
 void			mat33_inv(t_mat_3b3 result, t_mat_3b3 const m);
 void			mat33_transpose(t_mat_3b3 result, t_mat_3b3 const src);
+void			mat33_rot(t_mat_3b3 result, t_float theta, int_fast8_t axis);
 
 /*
 ** 4*4
 */
+
+void			mat44_set(t_mat_4b4 result, t_mat_3b3 const tl33_bloc,
+							t_vec_3d const bl13, t_vec_4d const tr41);
+void			mat44_set_diagmat(t_mat_4b4 result, t_vec_4d const coefs);
 void			mat44_add(t_mat_4b4 result,
 							t_mat_4b4 const ma, t_mat_4b4 const mb);
 void			mat44_scale(t_mat_4b4 result,
@@ -133,6 +140,9 @@ void			mat44_transpose(t_mat_4b4 result, t_mat_4b4 const m);
 void			mat44_subbloc33_ij(t_mat_3b3 result, t_mat_4b4 const m,
 							int i, int j);
 void			mat44_inv(t_mat_4b4 result, t_mat_4b4 const m);
+
+void			print_mat44(char const *title, t_mat_4b4 const mat);
+void			print_vec4(char const *title, t_vec_4d const v);
 
 /*
 ** t_quat			hop_add(t_quat const q1, t_quat const q2);

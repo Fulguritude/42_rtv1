@@ -63,3 +63,21 @@ void			mat33_mul(t_mat_3b3 result,
 	mat33_app_vec((t_float *)tmp + 6, ma, (t_float *)mb + 6);
 	ft_memcpy(result, tmp, sizeof(tmp));
 }
+
+void			mat33_transpose(t_mat_3b3 result, t_mat_3b3 const src)
+{
+	t_float		tmp;
+
+	tmp = src[1];
+	result[1] = src[3];
+	result[3] = tmp;
+	tmp = src[2];
+	result[2] = src[6];
+	result[6] = tmp;
+	tmp = src[7];
+	result[7] = src[5];
+	result[5] = tmp;
+	result[0] = src[0];
+	result[4] = src[4];
+	result[8] = src[8];
+}

@@ -77,3 +77,38 @@ void			mat44_mul(t_mat_4b4 result,
 	mat44_app_vec((t_float *)tmp + 12, ma, (t_float *)mb + 12);
 	ft_memcpy(result, tmp, sizeof(tmp));
 }
+
+/*
+**	[ 0  4  8  12 ]
+**  [ 1  5  9  13 ]
+**  [ 2  6  10 14 ]
+**	[ 3  7  11 15 ]
+*/
+
+void			mat44_transpose(t_mat_4b4 result, t_mat_4b4 const m)
+{
+	t_float		tmp[6];
+
+	result[0] = m[0];
+	result[5] = m[5];
+	result[10] = m[10];
+	result[15] = m[15];
+	tmp[0] = m[4];
+	tmp[1] = m[8];
+	tmp[2] = m[12];
+	tmp[3] = m[9];
+	tmp[4] = m[13];
+	tmp[5] = m[14];
+	result[4] = m[1];
+	result[8] = m[2];
+	result[12] = m[3];
+	result[9] = m[6];
+	result[13] = m[7];
+	result[14] = m[11];
+	result[1] = tmp[0];
+	result[2] = tmp[1];
+	result[3] = tmp[2];
+	result[6] = tmp[3];
+	result[7] = tmp[4];
+	result[11] = tmp[5];
+}

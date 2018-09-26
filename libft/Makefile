@@ -324,7 +324,8 @@ SRC_MATH_APA :=	ft_vlqnew.c						\
 				#ft_vlq_bwa.c
 				#ft_vlq_bwo.c
 
-SRC_MATH_ALG := vec3.c					\
+SRC_MATH_ALG := algebra_print.c			\
+				vec3.c					\
 				mat33.c					\
 				mat44.c					\
 				vec3_op.c				\
