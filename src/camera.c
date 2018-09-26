@@ -31,7 +31,8 @@ static void		cam_build_matrices(t_camera *cam)
 	result[9] = tmp[7];
 	result[10] = tmp[8];
 	result[11] = 0.;
-	vec3_sub(v, cam->world_pos, cam->anchor); //TODO maybe needs fixing
+//	vec3_sub(v, cam->world_pos, cam->anchor); //TODO maybe needs fixing
+	vec3_cpy(v, cam->world_pos);
 	result[12] = v[0];
 	result[13] = v[1];
 	result[14] = v[2];
@@ -47,10 +48,14 @@ t_camera		init_cam(t_vec_3d polar_cam_pos, t_vec_3d anchor)
 
 	vec3_cpy(result.anchor, anchor);
 	vec3_cpy(result.polar_pos, polar_cam_pos);
-	vec3_polar_to_cartesian(result.world_pos, polar_cam_pos);
+//printf("anchr %f %f %f\n", result.anchor[0], result.anchor[1], result.anchor[2]);
+//printf("polar %f %f %f\n", result.polar_pos[0], result.polar_pos[1], result.polar_pos[2]);
+	vec3_polar_to_cartesian(result.reltv_pos, polar_cam_pos);
+//printf("reltv %f %f %f\n", result.reltv_pos[0], result.reltv_pos[1], result.reltv_pos[2]);
+	vec3_add(result.world_pos, result.reltv_pos, result.anchor);
+//printf("world %f %f %f\n", result.world_pos[0], result.world_pos[1], result.world_pos[2]);
 //	vec3_add(ctrl->cam.reltv_pos, ctrl->cam.world_pos, ctrl->cam.anchor);
-	vec3_sub(result.axis_z, result.world_pos, result.anchor);
-vec3_add(result.world_pos, result.world_pos, result.anchor);
+	vec3_cpy(result.axis_z, result.reltv_pos);
 	vec3_eucl_nrmlz(result.axis_z, result.axis_z);
 	vec3_set(result.axis_y, 0., 1., 0.);
 	vec3_cross(result.axis_x, result.axis_y, result.axis_z);

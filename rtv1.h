@@ -49,7 +49,8 @@ typedef t_u32	t_color;
 /*
 ** CAMERA
 **
-** world_pos		: cartesian coordinate of camera in world
+** world_pos		: cartesian coordinate of camera in world 
+**						(world = anchor + relative)
 ** reltv_pos		: cartesian coordinate of camera with anchor as center
 ** polar_pos		: zoom/radius, longitude, latitude relative to anchor
 ** anchor			: origin of polar_pos and reltv_pos
@@ -57,12 +58,14 @@ typedef t_u32	t_color;
 ** axis_y			: up vector of cam
 ** axis_z			: "forward" vector of cam,  input eye vector
 ** hrz_fov			: field-of-view horizontal angle in radians
-** w_to_v			: the camera's world-to-view matrix
+** w_to_c			: the camera's world-to-view/cam matrix
+** c_to_w			: the camera's view/cam-to-world matrix (useful to put
+**						 rays in world space)
 */
 typedef struct	s_camera
 {
 	t_vec_3d		world_pos;
-//	t_vec_3d		reltv_pos;
+	t_vec_3d		reltv_pos;
 	t_vec_3d		polar_pos;
 	t_vec_3d		anchor;
 	t_vec_3d		axis_x;
