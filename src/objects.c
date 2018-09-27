@@ -20,7 +20,6 @@ static t_object		init_object(t_vec_3d const world_pos,
 	t_object	res;
 	t_mat_3b3	rot;
 	t_mat_3b3	tmp;
-	//t_vec_4d	trans;
 
 	res.type = null_obj;
 	res.intersect = NULL;
@@ -30,40 +29,18 @@ static t_object		init_object(t_vec_3d const world_pos,
 	vec3_cpy(res.albedo, rgb_albedo);
 	mat33_rot(rot, res.rot[0], 0);
 	mat33_rot(tmp, res.rot[1], 1);
-//printf("y_rot_mat:\n\tx: (%.5f, %.5f, %.5f)\n\ty: (%.5f, %.5f, %.5f)\n\tz: (%.5f, %.5f, %.5f)\n\n", tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6], tmp[7], tmp[8]);
 	mat33_mul(rot, tmp, rot);
 	mat33_rot(tmp, res.rot[2], 2);
 	mat33_mul(rot, tmp, rot);
-
 	mat33_set_diagmat(tmp, res.scl);
 	mat33_mul(rot, rot, tmp);
 	mat33_inv(tmp, rot);
-//printf("scale_diag_mat:\n\tx: (%.5f, %.5f, %.5f)\n\ty: (%.5f, %.5f, %.5f)\n\tz: (%.5f, %.5f, %.5f)\n\n", tmp[0], tmp[1], tmp[2], tmp[3], tmp[4], tmp[5], tmp[6], tmp[7], tmp[8]);
-
-//	ft_memcpy(trans, (t_vec_4d){res.pos[0], res.pos[1], res.pos[2], 1.}, sizeof(t_vec_4d));
 	mat44_set(res.unit_o_to_w, rot, (t_vec_3d){0, 0, 0}, (t_vec_4d){0, 0, 0, 1.});
 	mat44_set(res.unit_w_to_o, tmp, (t_vec_3d){0, 0, 0}, (t_vec_4d){0, 0, 0, 1.});
 	mat44_set(res.o_to_w, rot, (t_vec_3d){0, 0, 0},
 					(t_vec_4d){res.pos[0], res.pos[1], res.pos[2], 1.});
-
-/*	ft_memcpy(trans, (t_vec_4d){0., 0., 0., 1.}, sizeof(t_vec_4d));
-	mat44_set(res.o_to_w, rot, (t_vec_3d){0., 0., 0.}, trans);
-	t_mat_4b4 mat;
-	mat44_set_diagmat(mat, (t_vec_4d){1., 1., 1., 1.});
-	vec3_cpy((t_float *)mat + 12, res.pos);
-	mat44_mul(res.o_to_w, mat, res.o_to_w);
-*/
-print_mat44("1- o_to_w", res.o_to_w);
-
 	mat44_inv(res.w_to_o, res.o_to_w);
-
-print_mat44("2- w_to_o", res.w_to_o);
-
 	mat44_transpose(res.n_to_w, res.w_to_o);
-//t_mat_4b4	mat;
-//mat44_mul(mat, res.w_to_o, res.o_to_w);
-//print_mat44(mat, "3- id_R4:");
-
 	return (res);
 }
 
@@ -103,7 +80,7 @@ ft_printf("{red}init_objects\n");
 	tmp = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
 	tmp.type = sphere;
 	tmp.intersect = &intersect_ray_sphere;
-	tmp.get_cnn = &get_cnn_sphere;
+	tmp.get_hnn = &get_hnn_sphere;
 	ctrl->objlst[(ctrl->objlst_len)++] = tmp;
 
 
@@ -116,7 +93,7 @@ ft_printf("{red}init_objects\n");
 	tmp = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
 	tmp.type = sphere;
 	tmp.intersect = &intersect_ray_sphere;
-	tmp.get_cnn = &get_cnn_sphere;
+	tmp.get_hnn = &get_hnn_sphere;
 	ctrl->objlst[(ctrl->objlst_len)++] = tmp;
 
 //RED
@@ -128,7 +105,7 @@ ft_printf("{red}init_objects\n");
 	tmp = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
 	tmp.type = sphere;
 	tmp.intersect = &intersect_ray_sphere;
-	tmp.get_cnn = &get_cnn_sphere;
+	tmp.get_hnn = &get_hnn_sphere;
 	ctrl->objlst[(ctrl->objlst_len)++] = tmp;
 
 //GREEN
@@ -140,7 +117,7 @@ ft_printf("{red}init_objects\n");
 	tmp = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
 	tmp.type = sphere;
 	tmp.intersect = &intersect_ray_sphere;
-	tmp.get_cnn = &get_cnn_sphere;
+	tmp.get_hnn = &get_hnn_sphere;
 	ctrl->objlst[(ctrl->objlst_len)++] = tmp;
 
 //BLUE
@@ -152,7 +129,7 @@ ft_printf("{red}init_objects\n");
 	tmp = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
 	tmp.type = sphere;
 	tmp.intersect = &intersect_ray_sphere;
-	tmp.get_cnn = &get_cnn_sphere;
+	tmp.get_hnn = &get_hnn_sphere;
 	ctrl->objlst[(ctrl->objlst_len)++] = tmp;
 
 //PURPLE
@@ -164,7 +141,7 @@ ft_printf("{red}init_objects\n");
 	tmp = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
 	tmp.type = sphere;
 	tmp.intersect = &intersect_ray_sphere;
-	tmp.get_cnn = &get_cnn_sphere;
+	tmp.get_hnn = &get_hnn_sphere;
 	ctrl->objlst[(ctrl->objlst_len)++] = tmp;
 
 ft_printf("{red}end{eoc}\n");

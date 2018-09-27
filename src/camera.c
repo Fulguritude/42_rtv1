@@ -31,7 +31,6 @@ static void		cam_build_matrices(t_camera *cam)
 	result[9] = tmp[7];
 	result[10] = tmp[8];
 	result[11] = 0.;
-//	vec3_sub(v, cam->world_pos, cam->anchor); //TODO maybe needs fixing
 	vec3_cpy(v, cam->world_pos);
 	result[12] = v[0];
 	result[13] = v[1];
@@ -48,42 +47,15 @@ t_camera		init_cam(t_vec_3d polar_cam_pos, t_vec_3d anchor)
 
 	vec3_cpy(result.anchor, anchor);
 	vec3_cpy(result.polar_pos, polar_cam_pos);
-//printf("anchr %f %f %f\n", result.anchor[0], result.anchor[1], result.anchor[2]);
-//printf("polar %f %f %f\n", result.polar_pos[0], result.polar_pos[1], result.polar_pos[2]);
 	vec3_polar_to_cartesian(result.reltv_pos, polar_cam_pos);
-//printf("reltv %f %f %f\n", result.reltv_pos[0], result.reltv_pos[1], result.reltv_pos[2]);
 	vec3_add(result.world_pos, result.reltv_pos, result.anchor);
-//printf("world %f %f %f\n", result.world_pos[0], result.world_pos[1], result.world_pos[2]);
-//	vec3_add(ctrl->cam.reltv_pos, ctrl->cam.world_pos, ctrl->cam.anchor);
 	vec3_cpy(result.axis_z, result.reltv_pos);
 	vec3_eucl_nrmlz(result.axis_z, result.axis_z);
 	vec3_set(result.axis_y, 0., 1., 0.);
 	vec3_cross(result.axis_x, result.axis_y, result.axis_z);
 	vec3_eucl_nrmlz(result.axis_x, result.axis_x);
 	vec3_cross(result.axis_y, result.axis_x, result.axis_z);
-//	vec3_eucl_nrmlz(result.axis_y, result.axis_y);
-//	vec3_scale(result.axis_x, 1., result.axis_x);
-/*
-printf("cam:\n\tx: (%.5f, %.5f, %.5f)\n\ty: (%.5f, %.5f, %.5f)\n\tz: (%.5f, %.5f, %.5f)\n\n",
-result.axis_x[0], result.axis_x[1], result.axis_x[2],
-result.axis_y[0], result.axis_y[1], result.axis_y[2],
-result.axis_z[0], result.axis_z[1], result.axis_z[2]);
-*/
 	result.hrz_fov = 0.8;
 	cam_build_matrices(&result);
-/*
-printf("c_to_w:\n\tx: (%.5f, %.5f, %.5f, %.5f)\n\ty: (%.5f, %.5f, %.5f, %.5f)\n\tz: (%.5f, %.5f, %.5f, %.5f)\n\tt: (%.5f, %.5f, %.5f, %.5f)\n\n",
-result.c_to_w[0], result.c_to_w[1], result.c_to_w[2], result.c_to_w[3],
-result.c_to_w[4], result.c_to_w[5], result.c_to_w[6], result.c_to_w[7],
-result.c_to_w[8], result.c_to_w[9], result.c_to_w[10], result.c_to_w[11],
-result.c_to_w[12], result.c_to_w[13], result.c_to_w[14], result.c_to_w[15]);
-*/
-/*
-printf("w_to_c:\n\tx: (%.5f, %.5f, %.5f, %.5f)\n\ty: (%.5f, %.5f, %.5f, %.5f)\n\tz: (%.5f, %.5f, %.5f, %.5f)\n\tt: (%.5f, %.5f, %.5f, %.5f)\n\n",
-result.w_to_c[0], result.w_to_c[1], result.w_to_c[2], result.w_to_c[3],
-result.w_to_c[4], result.w_to_c[5], result.w_to_c[6], result.w_to_c[7],
-result.w_to_c[8], result.w_to_c[9], result.w_to_c[10], result.w_to_c[11],
-result.w_to_c[12], result.w_to_c[13], result.w_to_c[14], result.w_to_c[15]);
-*/
 	return (result);
 }
