@@ -59,14 +59,35 @@ t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
 	return (result);
 }
 
-static t_bool	cast_ray_to_objs(t_control *ctrl, t_ray ray, int const pixel)
+static t_color	get_color_from_fixed_objray(t_control *ctrl,
+							t_object const obj, t_ray const objray)
 {
-	t_bool		has_inter;
 	t_vec_3d	hitpos;
 	t_vec_3d	normal;
 	t_vec_3d	contact_dirlgt;
 	t_float		tmp;
 	t_vec_3d	lum;
+
+	obj.get_hnn(hitpos, normal, objray);
+	mat44_app_vec3(hitpos, obj.o_to_w, hitpos);
+	mat44_app_vec3(normal, obj.n_to_w, normal);
+	vec3_eucl_nrmlz(normal, normal);
+	vec3_sub(contact_dirlgt, ctrl->spot.origin, hitpos);
+	tmp = vec3_eucl_quadnorm(contact_dirlgt);
+	tmp = 1. / tmp;
+	vec3_scale(contact_dirlgt, sqrt(tmp), contact_dirlgt); //less costly
+	//vec3_eucl_nrmlz(contact_dirlgt, contact_dirlgt); //is the costlier version
+	vec3_scale(lum,
+		INV_PI * ctrl->spot.intensity * ft_fmax(0., vec3_dot(normal, contact_dirlgt)) * tmp,
+		obj.albedo);
+	return (color_app_lum(lum));
+}
+
+static t_bool	cast_ray_to_objs(t_control *ctrl, t_ray ray,
+									t_object **hit_obj, t_ray *res_objray)
+{
+	t_bool		has_inter;
+	t_bool		tmp_bool;
 	t_ray		objray;
 	int			k;
 	t_object	cur_obj;
@@ -77,23 +98,15 @@ static t_bool	cast_ray_to_objs(t_control *ctrl, t_ray ray, int const pixel)
 	{
 		cur_obj = ctrl->objlst[k];
 		objray = ray_x_to_y(cur_obj.w_to_o, cur_obj.unit_w_to_o, ray);
-		if ((has_inter = cur_obj.intersect(&objray)))
+		if ((tmp_bool = cur_obj.intersect(&objray)))
 		{
-			ray.t = objray.t;
-			cur_obj.get_hnn(hitpos, normal, objray);
-			mat44_app_vec3(hitpos, cur_obj.o_to_w, hitpos);
-			mat44_app_vec3(normal, cur_obj.n_to_w, normal);
-			vec3_eucl_nrmlz(normal, normal);
-			vec3_sub(contact_dirlgt, ctrl->spot.origin, hitpos);
-			tmp = vec3_eucl_quadnorm(contact_dirlgt);
-			tmp = 1. / tmp;
-			vec3_scale(contact_dirlgt, sqrt(tmp), contact_dirlgt); //less costly
-			//vec3_eucl_nrmlz(contact_dirlgt, contact_dirlgt); //is the costlier version
-			vec3_scale(
-				lum,
-				INV_PI * ctrl->spot.intensity * ft_fmax(0., vec3_dot(normal, contact_dirlgt)) * tmp,
-				cur_obj.albedo);
-			((t_u32 *)ctrl->img_data)[pixel] = color_app_lum(lum);
+			if (objray.t < ray.t)
+			{
+				has_inter = has_inter || tmp_bool;
+				ray.t = objray.t;
+				*hit_obj = &(ctrl->objlst[k]);
+				*res_objray = objray;
+			}
 		}
 	}
 	return (has_inter);
@@ -113,24 +126,24 @@ void			cast_rays(t_control *ctrl)
 	int			i;
 	int			j;
 	t_ray		ray;
-	t_vec_3d	tmp;
 	t_float		fov_val;
+	t_object	*hit_obj;
 
 	fov_val = -REN_W / (2 * tan(ctrl->cam.hrz_fov));
-	i = 0;
-	while (i < REN_H)
+	i = -1;
+	while (++i < REN_H)
 	{
-		j = 0;
-		while (j < REN_W)
+		j = -1;
+		while (++j < REN_W)
 		{
 			vec3_cpy(ray.pos, ctrl->cam.world_pos);
 			ray.t = 1. / 0.;
-			vec3_set(tmp, j - REN_W / 2, i - REN_H / 2, fov_val);
-			mat44_app_vec3(tmp, ctrl->cam.c_to_w, tmp);
-			vec3_eucl_nrmlz(ray.dir, tmp);
-			cast_ray_to_objs(ctrl, ray, i * REN_W + j);
-			++j;
+			vec3_set(ray.dir, j - REN_W / 2, i - REN_H / 2, fov_val);
+			mat44_app_vec3(ray.dir, ctrl->cam.c_to_w, ray.dir);
+			vec3_eucl_nrmlz(ray.dir, ray.dir);
+			if (cast_ray_to_objs(ctrl, ray, &hit_obj, &ray))
+				((t_u32 *)ctrl->img_data)[i * REN_W + j] =
+					get_color_from_fixed_objray(ctrl, *hit_obj, ray);
 		}
-		++i;
 	}
 }
