@@ -22,9 +22,13 @@
 
 t_bool		intersect_ray_plane(t_ray *objray)
 {
+	t_float		tmp;
+
 	if (objray->pos[1] * objray->dir[1] >= 0.)
 		return (FALSE);
-	objray->t = -objray->pos[1] / objray->dir[1];
+	if ((tmp = -objray->pos[1] / objray->dir[1]) >= objray->t)
+		return (FALSE);
+	objray->t = tmp;
 	return (TRUE);
 }
 

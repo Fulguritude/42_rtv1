@@ -277,6 +277,7 @@ SRC_MATH_CNV :=	ft_atoi.c					\
 				ft_atolf.c
 
 SRC_MATH_OP :=	ft_abs.c					\
+				ft_fabs.c					\
 				ft_max.c					\
 				ft_min.c					\
 				ft_umax.c					\

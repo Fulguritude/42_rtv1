@@ -49,7 +49,13 @@ t_bool			intersect_ray_infcone(t_ray *objray)
 	quadpoly[2] = vec3_yneg_dot(objray->pos, objray->pos);
 	if (!(get_realroots_quadpoly(&root1, &root2, quadpoly)))
 		return (FALSE);
-	if (root1 <= 0. || root2 <= 0. || (root1 > objray->t && root2 > objray->t))
+	if (root1 <= 0. && root2 <= 0.)
+		return (FALSE);
+	if (root1 <= 0.)
+		root1 = root2;
+	else if (root2 <= 0.)
+		root2 = root1;
+	if (root1 > objray->t && root2 > objray->t)
 		return (FALSE);
 	objray->t = ft_fmin(root1, root2);
 	return (TRUE);

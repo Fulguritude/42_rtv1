@@ -40,6 +40,9 @@
 # define BG_COLOR		0x00BB88
 # define NO_INTER		0xFF000000
 
+# define APPROX			0.000001
+# define INIT_FOV		0.8
+
 # define MAX_OBJ_NB		32
 
 typedef struct	s_point
@@ -153,21 +156,24 @@ typedef	enum	e_objtype
 **					parameter should already be set before this function is
 **					called
 */
+
+typedef			t_bool (*t_inter_func)(t_ray *objray);
+typedef			void (*t_hnn_func)(t_vec_3d hp, t_vec_3d nml, t_ray const objr);
+
 typedef struct	s_object
 {
-	t_objtype	type;
-	t_vec_3d	pos;
-	t_vec_3d	scl;
-	t_vec_3d	rot;
-	t_vec_3d	albedo;
-	t_mat_4b4	unit_o_to_w;
-	t_mat_4b4	unit_w_to_o;
-	t_mat_4b4	o_to_w;
-	t_mat_4b4	w_to_o;
-	t_mat_4b4	n_to_w;
-	t_bool		(*intersect)(t_ray *objray);
-	void		(*get_hnn)(t_vec_3d contact, t_vec_3d normal,
-							t_ray const objray);
+	t_objtype		type;
+	t_vec_3d		pos;
+	t_vec_3d		scl;
+	t_vec_3d		rot;
+	t_vec_3d		albedo;
+	t_mat_4b4		unit_o_to_w;
+	t_mat_4b4		unit_w_to_o;
+	t_mat_4b4		o_to_w;
+	t_mat_4b4		w_to_o;
+	t_mat_4b4		n_to_w;
+	t_inter_func	intersect;
+	t_hnn_func		get_hnn;
 }				t_object;
 
 /*
@@ -255,21 +261,24 @@ void			get_hnn_plane(t_vec_3d hitpos, t_vec_3d normal,
 /*
 ** sphere.c
 */
-t_bool			intersect_ray_sphere(t_ray *ray);
+t_bool			intersect_ray_sphere(t_ray *objray);
 void			get_hnn_sphere(t_vec_3d hitpos, t_vec_3d normal,
-								t_ray const ray);
+								t_ray const objray);
 
 /*
 ** cone.c
 */
-t_bool			intersect_ray_infcone(t_ray *ray);
+t_bool			intersect_ray_infcone(t_ray *objray);
 void			get_hnn_infcone(t_vec_3d hitpos, t_vec_3d normal,
-								t_ray const ray);
+								t_ray const objray);
 /*
 ** cylinder.c
 */
-t_bool			intersect_ray_infcylinder(t_ray *ray);
+t_bool			intersect_ray_infcylinder(t_ray *objray);
 void			get_hnn_infcylinder(t_vec_3d hitpos, t_vec_3d normal,
-								t_ray const ray);
+								t_ray const objray);
+t_bool			intersect_ray_cylinder(t_ray *objray);
+void			get_hnn_cylinder(t_vec_3d hitpos, t_vec_3d normal,
+									t_ray const objray);
 
 #endif

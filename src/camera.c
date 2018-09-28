@@ -55,7 +55,7 @@ t_camera		init_cam(t_vec_3d polar_cam_pos, t_vec_3d anchor)
 	vec3_cross(result.axis_x, result.axis_y, result.axis_z);
 	vec3_eucl_nrmlz(result.axis_x, result.axis_x);
 	vec3_cross(result.axis_y, result.axis_x, result.axis_z);
-	result.hrz_fov = 0.8;
+	result.hrz_fov = INIT_FOV;
 	cam_build_matrices(&result);
 	return (result);
 }

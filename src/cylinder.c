@@ -65,29 +65,35 @@ t_bool		intersect_ray_infcylinder(t_ray *objray)
 **	circle verifies {p = (x, -0.5, z) | x^2 + z^2 <= 1} and the top circle
 **	{p = (x, +0.5, z) | x^2 + z^2 <= 1}
 */
-/*
+
 t_bool		intersect_ray_cylinder(t_ray *objray)
 {
 	t_ray		tmp_ray;
 	t_float		tmp;
+	t_bool		is_in_hrz_area;
+	t_bool		is_in_vrt_area;
 
-	if ((-0.5 <= objray->pos[1] && objray->pos[1] <= 0.5) ||
-		(dist_to_y_axis = vec3_ynull_dot(objray->pos, objray->pos)) <= 1.)
+	if ((is_in_hrz_area = (-0.5 <= objray->pos[1] && objray->pos[1] <= 0.5)) &&
+		(is_in_vrt_area = (vec3_ynull_dot(objray->pos, objray->pos) <= 1.)))
 		return (FALSE);
+	tmp = 1. / 0.;
 	tmp_ray = *objray;
 	if (intersect_ray_infcylinder(&tmp_ray))
 	{
-		tmp = tmp_ray.pos[1] + tmp_ray.t * tmp_ray.dir[1];
-		if (tmp < -0.5 || 0.5 < tmp)
-		{
-			objray->t = tmp_ray.t;
-			return (TRUE);
-		}
+		if (ft_fabs(tmp_ray.pos[1] + tmp_ray.t * tmp_ray.dir[1]) < 0.5)
+			tmp = tmp_ray.t;
 	}
 	tmp_ray.t = objray->t;
-	if (intersect_ray_disk(&tmp_ray))
+	tmp_ray.pos[1] -= 0.5;
+	if (!is_in_hrz_area && intersect_ray_disk(&tmp_ray))
+		tmp = ft_fmin(tmp, tmp_ray.t);
+	tmp_ray.t = objray->t;
+	tmp_ray.pos[1] += 1.;
+	if (!is_in_hrz_area && intersect_ray_disk(&tmp_ray))
+		tmp = ft_fmin(tmp, tmp_ray.t);
+	objray->t = ft_fmin(tmp, objray->t);
+	return (objray->t == tmp);
 }
-*/
 
 /*
 ** Rays should arrive already converted to object space.
@@ -102,4 +108,16 @@ void		get_hnn_infcylinder(t_vec_3d hitpos, t_vec_3d normal,
 {
 	get_ray_hitpos(hitpos, objray);
 	vec3_set(normal, hitpos[0], 0., hitpos[2]);
+}
+
+void		get_hnn_cylinder(t_vec_3d hitpos, t_vec_3d normal,
+									t_ray const objray)
+{
+	get_ray_hitpos(hitpos, objray);
+	if (ft_fabs(hitpos[1] - 0.5) < APPROX)
+		vec3_set(normal, 0., 1., 0.);
+	else if (ft_fabs(hitpos[1] + 0.5) < APPROX)
+		vec3_set(normal, 0., -1., 0.);
+	else
+		vec3_set(normal, hitpos[0], 0., hitpos[2]);
 }

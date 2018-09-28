@@ -20,7 +20,11 @@ t_bool		get_realroots_quadpoly(t_float *root1, t_float *root2,
 
 	delta = quadpoly[1] * quadpoly[1] - 4 * quadpoly[0] * quadpoly[2];
 	if (delta < 0.)
+	{
+		*root1 = 0. / 0.;
+		*root2 = 0. / 0.;
 		return (FALSE);
+	}
 	one_over_two_a = 0.5 / quadpoly[0];
 	delta = sqrt(delta);
 	*root1 = (-quadpoly[1] + delta) * one_over_two_a;

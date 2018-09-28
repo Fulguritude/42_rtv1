@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-static t_object		init_object(t_vec_3d const world_pos,
+static t_object		build_obj_matrices(t_vec_3d const world_pos,
 								t_vec_3d const xyz_scaling,
 								t_vec_3d const xyz_rot_rad,
 								t_vec_3d const rgb_albedo)
@@ -44,6 +44,34 @@ static t_object		init_object(t_vec_3d const world_pos,
 	return (res);
 }
 
+static t_inter_func		get_inter_func(t_objtype const type)
+{
+	t_inter_func	res;
+
+	res = type == sphere ? &intersect_ray_sphere : NULL;
+	res = type == plane ? &intersect_ray_plane : res;
+	res = type == infcone ? &intersect_ray_infcone : res;
+	res = type == infcylinder ? &intersect_ray_infcylinder : res;
+	res = type == disk ? &intersect_ray_disk : res;
+	res = type == square ? &intersect_ray_square : res;
+//	res = type == cone ? &intersect_ray_cone : res;
+	res = type == cylinder ? &intersect_ray_cylinder : res;
+	return (res);
+}
+
+static t_hnn_func		get_hnn_func(t_objtype const type)
+{
+	t_hnn_func	res;
+
+	res = type == sphere ? &get_hnn_sphere : NULL;
+	res = type == infcone ? &get_hnn_infcone : res;
+	res = type == infcylinder ? &get_hnn_infcylinder : res;
+//	res = type == cone ? &get_hnn_cone : res;
+	res = type == cylinder ? &get_hnn_cylinder : res;
+	res = type == plane || type == disk || type == square ? get_hnn_plane : res;
+	return (res);
+}
+
 void				print_object(t_object const obj)
 {
 	printf("pos: (%f, %f, %f)\n"
@@ -56,11 +84,12 @@ void				print_object(t_object const obj)
 			obj.albedo[0], obj.albedo[1], obj.albedo[2]);
 }
 
-void				init_sphere(t_control *ctrl,
+void				init_object(t_control *ctrl,
 							t_mat_3b3 const transforms,
-							t_vec_3d const rgb_albedo)
+							t_vec_3d const rgb_albedo,
+							t_objtype const type)
 {
-	t_object	sphr;
+	t_object	obj;
 	t_vec_3d	world_pos;
 	t_vec_3d	xyz_scaling;
 	t_vec_3d	xyz_rot_rad;
@@ -69,80 +98,44 @@ void				init_sphere(t_control *ctrl,
 	vec3_cpy(world_pos, (t_float *)transforms);
 	vec3_cpy(xyz_scaling, (t_float *)transforms + 3);
 	vec3_cpy(xyz_rot_rad, (t_float *)transforms + 6);
-	sphr = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
-	sphr.type = sphere;
-	sphr.intersect = &intersect_ray_sphere;
-	sphr.get_hnn = &get_hnn_sphere;
-	ctrl->objlst[(ctrl->objlst_len)++] = sphr;
+	obj = build_obj_matrices(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
+	obj.type = type;
+	obj.intersect = get_inter_func(type);
+	obj.get_hnn = get_hnn_func(type);
+	ctrl->objlst[(ctrl->objlst_len)++] = obj;
 }
 
-void				init_infcylinder(t_control *ctrl,
-							t_mat_3b3 const transforms,
-							t_vec_3d const rgb_albedo)
-{
-	t_object	infcldr;
-	t_vec_3d	world_pos;
-	t_vec_3d	xyz_scaling;
-	t_vec_3d	xyz_rot_rad;
-
-
-	vec3_cpy(world_pos, (t_float *)transforms);
-	vec3_cpy(xyz_scaling, (t_float *)transforms + 3);
-	vec3_cpy(xyz_rot_rad, (t_float *)transforms + 6);
-	infcldr = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
-	infcldr.type = infcylinder;
-	infcldr.intersect = &intersect_ray_infcylinder;
-	infcldr.get_hnn = &get_hnn_infcylinder;
-	ctrl->objlst[(ctrl->objlst_len)++] = infcldr;
-}
-
-void				init_infcone(t_control *ctrl,
-							t_mat_3b3 const transforms,
-							t_vec_3d const rgb_albedo)
-{
-	t_object	infcn;
-	t_vec_3d	world_pos;
-	t_vec_3d	xyz_scaling;
-	t_vec_3d	xyz_rot_rad;
-
-
-	vec3_cpy(world_pos, (t_float *)transforms);
-	vec3_cpy(xyz_scaling, (t_float *)transforms + 3);
-	vec3_cpy(xyz_rot_rad, (t_float *)transforms + 6);
-	infcn = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
-	infcn.type = infcone;
-	infcn.intersect = &intersect_ray_infcone;
-	infcn.get_hnn = &get_hnn_infcone;
-	ctrl->objlst[(ctrl->objlst_len)++] = infcn;
-}
-
+//the following function will probably need to be replace by a reader
 void				init_objects(t_control *ctrl)
 {
-//	t_list		*objlst;
-//	t_list		*next_obj;
-//	t_object	tmp;
-//	t_vec_3d	rgb_albedo;
-
 ft_printf("{red}init_objects\n");
 	vec3_set(ctrl->spot.origin, 1., 10., 15.);
 	ctrl->spot.intensity = 500000.;
 	ctrl->objlst_len = 0;
 
-//BLACK
 	ft_printf("{white}BLACK:\n");
-	init_sphere(ctrl, (t_mat_3b3){0., 0., 0., 1., 2., 3., 0., 0., 0.}, (t_vec_3d){0.1, 0.1, 0.1});
+	init_object(ctrl, (t_mat_3b3){0., 0., 0., 1., 2., 3., 0., HALF_PI, 0.}, (t_vec_3d){0.1, 0.1, 0.1}, sphere);
 
-//RED
 	ft_printf("{red}RED:\n");
-	init_sphere(ctrl, (t_mat_3b3){0., 0., -10., 3., 3., 3., 0., 0., 0.}, (t_vec_3d){1., 0, 0});
+	init_object(ctrl, (t_mat_3b3){0., 0., -10., 3., 3., 3., 0., 0., 0.}, (t_vec_3d){1., 0, 0}, sphere);
 
-//GREEN
 	ft_printf("{green}GREEN:\n");
-	init_infcylinder(ctrl, (t_mat_3b3){5., 5., -9., 0.5, 1., 3., 0., 0., 0.}, (t_vec_3d){0., 1., 0.});
+	init_object(ctrl, (t_mat_3b3){5., 5., -9., 0.5, 1., 3., HALF_PI / 2., 0., 0.}, (t_vec_3d){0., 1., 0.}, infcylinder);
 
-//BLUE
 	ft_printf("{blue}BLUE:\n");
-	init_infcone(ctrl, (t_mat_3b3){-5., 0., -9., 1., 1., 1., 0., 0., 0.}, (t_vec_3d){0., 0., 1.});
-ft_printf("{red}end{eoc}\n");
+	init_object(ctrl, (t_mat_3b3){-5., 0., -9., 0.4, 1., 0.4, 0., 0., 0.}, (t_vec_3d){0., 0., 1.}, infcone);
 
+	ft_printf("{white}GREY:\n");
+	init_object(ctrl, (t_mat_3b3){-5., -20., -9., 1., 1., 1., 0., 0., 0.}, (t_vec_3d){0.5, 0.5, 0.5}, plane);
+
+	ft_printf("{yellow}ORANGE:\n");
+	init_object(ctrl, (t_mat_3b3){-10., 0., 1., 10., 1., 2., HALF_PI, HALF_PI / 2., 0.}, (t_vec_3d){1., 0.5, 0.}, disk);
+
+	ft_printf("{magenta}PURPLE:\n");
+	init_object(ctrl, (t_mat_3b3){10., 1., 1., 10., 10., 5., HALF_PI, -HALF_PI / 2., 0.}, (t_vec_3d){0.7, 0.1, 0.5}, square);
+
+	ft_printf("{cyan}TURQUOISE:\n");
+	init_object(ctrl, (t_mat_3b3){20., 0., 0., 3., 5., 1., HALF_PI / 2, -HALF_PI / 2., HALF_PI}, (t_vec_3d){0.1, 0.5, 0.8}, cylinder);
+
+ft_printf("{red}end{eoc}\n");
 }

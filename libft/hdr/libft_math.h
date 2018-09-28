@@ -51,6 +51,11 @@
 t_u64					ft_abs(t_s64 x);
 
 /*
+** Returns the floating point distance from x to 0.
+*/
+t_float					ft_fabs(t_float x);
+
+/*
 ** Returns max of a and b, signed.
 */
 t_s64					ft_max(t_s64 a, t_s64 b);
