@@ -95,8 +95,8 @@ static t_bool	cast_ray_to_objs(t_control *ctrl, t_ray ray, int const pixel)
 				cur_obj.albedo);
 			((t_u32 *)ctrl->img_data)[pixel] = color_app_lum(lum);
 		}
-		else if (cur_obj.type != sphere)
-			exit_error("cast_ray_to_objs: malformed object.", 0);
+//		else if (cur_obj.type != sphere)
+//			exit_error("cast_ray_to_objs: malformed object.", 0);
 	}
 	return (has_inter);
 }

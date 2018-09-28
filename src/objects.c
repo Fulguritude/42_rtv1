@@ -56,94 +56,93 @@ void				print_object(t_object const obj)
 			obj.albedo[0], obj.albedo[1], obj.albedo[2]);
 }
 
+void				init_sphere(t_control *ctrl,
+							t_mat_3b3 const transforms,
+							t_vec_3d const rgb_albedo)
+{
+	t_object	sphr;
+	t_vec_3d	world_pos;
+	t_vec_3d	xyz_scaling;
+	t_vec_3d	xyz_rot_rad;
+
+
+	vec3_cpy(world_pos, (t_float *)transforms);
+	vec3_cpy(xyz_scaling, (t_float *)transforms + 3);
+	vec3_cpy(xyz_rot_rad, (t_float *)transforms + 6);
+	sphr = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
+	sphr.type = sphere;
+	sphr.intersect = &intersect_ray_sphere;
+	sphr.get_hnn = &get_hnn_sphere;
+	ctrl->objlst[(ctrl->objlst_len)++] = sphr;
+}
+
+void				init_infcylinder(t_control *ctrl,
+							t_mat_3b3 const transforms,
+							t_vec_3d const rgb_albedo)
+{
+	t_object	infcldr;
+	t_vec_3d	world_pos;
+	t_vec_3d	xyz_scaling;
+	t_vec_3d	xyz_rot_rad;
+
+
+	vec3_cpy(world_pos, (t_float *)transforms);
+	vec3_cpy(xyz_scaling, (t_float *)transforms + 3);
+	vec3_cpy(xyz_rot_rad, (t_float *)transforms + 6);
+	infcldr = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
+	infcldr.type = infcylinder;
+	infcldr.intersect = &intersect_ray_infcylinder;
+	infcldr.get_hnn = &get_hnn_infcylinder;
+	ctrl->objlst[(ctrl->objlst_len)++] = infcldr;
+}
+
+void				init_infcone(t_control *ctrl,
+							t_mat_3b3 const transforms,
+							t_vec_3d const rgb_albedo)
+{
+	t_object	infcn;
+	t_vec_3d	world_pos;
+	t_vec_3d	xyz_scaling;
+	t_vec_3d	xyz_rot_rad;
+
+
+	vec3_cpy(world_pos, (t_float *)transforms);
+	vec3_cpy(xyz_scaling, (t_float *)transforms + 3);
+	vec3_cpy(xyz_rot_rad, (t_float *)transforms + 6);
+	infcn = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
+	infcn.type = infcone;
+	infcn.intersect = &intersect_ray_infcone;
+	infcn.get_hnn = &get_hnn_infcone;
+	ctrl->objlst[(ctrl->objlst_len)++] = infcn;
+}
+
 void				init_objects(t_control *ctrl)
 {
 //	t_list		*objlst;
 //	t_list		*next_obj;
-	t_object	tmp;
-	t_vec_3d	world_pos;
-	t_vec_3d	xyz_scaling;
-	t_vec_3d	xyz_rot_rad;
-	t_vec_3d	rgb_albedo;
+//	t_object	tmp;
+//	t_vec_3d	rgb_albedo;
 
 ft_printf("{red}init_objects\n");
 	vec3_set(ctrl->spot.origin, 1., 10., 15.);
 	ctrl->spot.intensity = 500000.;
 	ctrl->objlst_len = 0;
 
-//TMP
-
-	vec3_cpy(world_pos, (t_vec_3d){0., 0., 0.});
-	vec3_cpy(xyz_scaling, (t_vec_3d){2., 1., 1.});
-	vec3_cpy(xyz_rot_rad, (t_vec_3d){0., 0., 0.});
-	vec3_cpy(rgb_albedo, (t_vec_3d){0.7, 0., 0.7});
-	tmp = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
-	tmp.type = sphere;
-	tmp.intersect = &intersect_ray_sphere;
-	tmp.get_hnn = &get_hnn_sphere;
-	ctrl->objlst[(ctrl->objlst_len)++] = tmp;
-
-
 //BLACK
 	ft_printf("{white}BLACK:\n");
-	vec3_cpy(world_pos, (t_vec_3d){0., 0., 0.});
-	vec3_cpy(xyz_scaling, (t_vec_3d){1., 2., 3.});
-	vec3_cpy(xyz_rot_rad, (t_vec_3d){0., 0., 0.});
-	vec3_cpy(rgb_albedo, (t_vec_3d){0.1, 0.1, 0.1});
-	tmp = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
-	tmp.type = sphere;
-	tmp.intersect = &intersect_ray_sphere;
-	tmp.get_hnn = &get_hnn_sphere;
-	ctrl->objlst[(ctrl->objlst_len)++] = tmp;
+	init_sphere(ctrl, (t_mat_3b3){0., 0., 0., 1., 2., 3., 0., 0., 0.}, (t_vec_3d){0.1, 0.1, 0.1});
 
 //RED
 	ft_printf("{red}RED:\n");
-	vec3_cpy(world_pos, (t_vec_3d){0., 0., -10.});
-	vec3_cpy(xyz_scaling, (t_vec_3d){3., 3., 3.});
-	vec3_cpy(xyz_rot_rad, (t_vec_3d){0., 0., 0.});
-	vec3_cpy(rgb_albedo, (t_vec_3d){1., 0., 0.});
-	tmp = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
-	tmp.type = sphere;
-	tmp.intersect = &intersect_ray_sphere;
-	tmp.get_hnn = &get_hnn_sphere;
-	ctrl->objlst[(ctrl->objlst_len)++] = tmp;
+	init_sphere(ctrl, (t_mat_3b3){0., 0., -10., 3., 3., 3., 0., 0., 0.}, (t_vec_3d){1., 0, 0});
 
 //GREEN
 	ft_printf("{green}GREEN:\n");
-	vec3_cpy(world_pos, (t_vec_3d){5., 5., -9.});
-	vec3_cpy(xyz_scaling, (t_vec_3d){0.5, 1., 2.});
-	vec3_cpy(xyz_rot_rad, (t_vec_3d){0., 0., 0.});
-	vec3_cpy(rgb_albedo, (t_vec_3d){0., 1., 0.});
-	tmp = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
-	tmp.type = sphere;
-	tmp.intersect = &intersect_ray_sphere;
-	tmp.get_hnn = &get_hnn_sphere;
-	ctrl->objlst[(ctrl->objlst_len)++] = tmp;
+	init_infcylinder(ctrl, (t_mat_3b3){5., 5., -9., 0.5, 1., 3., 0., 0., 0.}, (t_vec_3d){0., 1., 0.});
 
 //BLUE
 	ft_printf("{blue}BLUE:\n");
-	vec3_cpy(world_pos, (t_vec_3d){1., -1., -7.75});
-	vec3_cpy(xyz_scaling, (t_vec_3d){2., 1, 1.});
-	vec3_cpy(xyz_rot_rad, (t_vec_3d){0., 0., 0.});
-	vec3_cpy(rgb_albedo, (t_vec_3d){0., 0., 1.});
-	tmp = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
-	tmp.type = sphere;
-	tmp.intersect = &intersect_ray_sphere;
-	tmp.get_hnn = &get_hnn_sphere;
-	ctrl->objlst[(ctrl->objlst_len)++] = tmp;
-
-//PURPLE
-	ft_printf("{magenta}PURPLE:\n");
-	vec3_cpy(world_pos, (t_vec_3d){0.5, 0.5, -0.5});
-	vec3_cpy(xyz_scaling, (t_vec_3d){1., 1., 1.});
-	vec3_cpy(xyz_rot_rad, (t_vec_3d){0., 0., 0.});
-	vec3_cpy(rgb_albedo, (t_vec_3d){1., 0., 1.});
-	tmp = init_object(world_pos, xyz_scaling, xyz_rot_rad, rgb_albedo);
-	tmp.type = sphere;
-	tmp.intersect = &intersect_ray_sphere;
-	tmp.get_hnn = &get_hnn_sphere;
-	ctrl->objlst[(ctrl->objlst_len)++] = tmp;
-
+	init_infcone(ctrl, (t_mat_3b3){-5., 0., -9., 1., 1., 1., 0., 0., 0.}, (t_vec_3d){0., 0., 1.});
 ft_printf("{red}end{eoc}\n");
 
 }

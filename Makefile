@@ -41,13 +41,17 @@ TSTDIR	:=	./tests/
 SRCDIR	:=	./src/
 
 HDRS	:=	$(NAME).h
-SRCS	:=	camera.c		\
-			coordinates.c	\
-			event_key.c		\
-			image_utils.c	\
-			rays.c			\
-			intersect.c		\
-			render.c		\
+SRCS	:=	camera.c			\
+			coordinates.c		\
+			event_key.c			\
+			image_utils.c		\
+			rays.c				\
+			primitive_utils.c	\
+			primitives_2d.c		\
+			sphere.c			\
+			cylinder.c			\
+			cone.c				\
+			render.c			\
 			objects.c
 			
 

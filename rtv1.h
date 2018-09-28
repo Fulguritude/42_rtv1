@@ -13,6 +13,10 @@
 #ifndef RTV1_H
 # define RTV1_H
 
+/*
+** NB : convention used is +x for right axis, +y for up axis, +z for back axis
+*/
+
 # include "libft/hdr/libft.h"
 # include "libft/hdr/libft_algebra.h"
 # include "libft/hdr/ft_printf.h"
@@ -105,8 +109,12 @@ typedef	enum	e_objtype
 {
 	null_obj,
 	sphere,
-//	plane,
+	plane,
+	disk,
+	square,
+	infcylinder,
 	cylinder,
+	infcone,
 	cone,
 	cube
 }				t_objtype;
@@ -196,9 +204,10 @@ void			mlximg_clear(t_control *ctrl);
 
 /*
 ** camera.c
+**
+** static void		build_cam_matrices(t_mat_4b4 result, t_camera const cam);
 */
 t_camera		init_cam(t_vec_3d polar_cam_pos, t_vec_3d anchor);
-//static void		build_cam_matrices(t_mat_4b4 result, t_camera const cam);
 
 /*
 ** render.c
@@ -218,21 +227,49 @@ void			vec3_cartesian_to_polar(t_vec_3d result, t_vec_3d const src);
 int				handle_key(int key, void *param);
 
 /*
-** intersect.c
-*/
-t_bool			intersect_ray_sphere(t_ray *ray);//, t_object const sphr);
-void			get_hnn_sphere(t_vec_3d contact, t_vec_3d normal,
-								t_ray const ray);//, t_object const sphr);
-
-/*
 ** rays.c
 */
 void			cast_rays(t_control *ctrl);
 
-
 /*
 ** objects.c
 */
-void				init_objects(t_control *ctrl);
+void			init_objects(t_control *ctrl);
+
+/*
+** primitive_utils.c
+*/
+t_bool			get_realroots_quadpoly(t_float *root1, t_float *root2,
+									t_vec_3d const quadpoly);
+void			get_ray_hitpos(t_vec_3d hitpos, t_ray const objray);
+
+/*
+** primitives_2d.c
+*/
+t_bool			intersect_ray_plane(t_ray *objray);
+t_bool			intersect_ray_disk(t_ray *objray);
+t_bool			intersect_ray_square(t_ray *objray);
+void			get_hnn_plane(t_vec_3d hitpos, t_vec_3d normal,
+							t_ray const objray);
+
+/*
+** sphere.c
+*/
+t_bool			intersect_ray_sphere(t_ray *ray);
+void			get_hnn_sphere(t_vec_3d hitpos, t_vec_3d normal,
+								t_ray const ray);
+
+/*
+** cone.c
+*/
+t_bool			intersect_ray_infcone(t_ray *ray);
+void			get_hnn_infcone(t_vec_3d hitpos, t_vec_3d normal,
+								t_ray const ray);
+/*
+** cylinder.c
+*/
+t_bool			intersect_ray_infcylinder(t_ray *ray);
+void			get_hnn_infcylinder(t_vec_3d hitpos, t_vec_3d normal,
+								t_ray const ray);
 
 #endif
