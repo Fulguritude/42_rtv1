@@ -43,6 +43,7 @@
 # define APPROX			0.000001
 # define INIT_FOV		0.8
 
+# define MAX_LGT_NB		16
 # define MAX_OBJ_NB		32
 
 typedef struct	s_point
@@ -87,7 +88,7 @@ typedef struct	s_camera
 ** RAYS AND SHADING
 **
 ** Rays can be interpreted in any space.
-** origin + scale(t, dir) = end of the current ray
+** pos + scale(t, dir) = end of the current ray; t is init at +inf.
 */
 typedef struct	s_ray
 {
@@ -96,11 +97,26 @@ typedef struct	s_ray
 	t_float		t;
 }				t_ray;
 
-typedef struct	s_light_src
+/*
+** Respective intensity for light source's rgb is vec3_scale(intensity, rgb),
+**	where rgb contains values between 0. and 1.
+*/
+typedef struct	s_light
 {
-	t_vec_3d	origin;
+	t_vec_3d	pos;
 	t_float		intensity;
-}				t_light_src;
+	t_vec_3d	rgb;
+}				t_light;
+
+/*
+**
+*/
+typedef struct	s_shader
+{
+	t_ray		dirlight;
+	t_vec_3d	normal;
+	t_vec_3d	obj_albedo;
+}				t_shader;
 
 /*
 ** PRIMITIVES
@@ -195,7 +211,8 @@ typedef struct	s_control
 	t_point			mouse;
 	t_object		objlst[MAX_OBJ_NB];
 	int				objlst_len;
-	t_light_src		spot;
+	t_light			spotlst[MAX_LGT_NB];
+	int				spotlst_len;
 }				t_control;
 
 void			exit_error(char *e_msg, int e_no);
@@ -235,12 +252,24 @@ int				handle_key(int key, void *param);
 /*
 ** rays.c
 */
+
+void			mat44_app_vec3(t_vec_3d result,
+								t_mat_4b4 const mat,
+								t_vec_3d const v);
+t_bool			trace_ray_to_objs(t_control *ctrl, t_ray ray,
+									t_object **hit_obj, t_ray *res_objray);
 void			cast_rays(t_control *ctrl);
 
 /*
 ** objects.c
 */
 void			init_objects(t_control *ctrl);
+
+/*
+** shader.c
+*/
+t_color			get_color_from_fixed_objray(t_control *ctrl,
+							t_object const obj, t_ray const objray);
 
 /*
 ** primitive_utils.c

@@ -109,8 +109,19 @@ void				init_object(t_control *ctrl,
 void				init_objects(t_control *ctrl)
 {
 ft_printf("{red}init_objects\n");
-	vec3_set(ctrl->spot.origin, 1., 40., 15.);
-	ctrl->spot.intensity = 5000000.;
+	ctrl->spotlst_len = 0;
+
+	vec3_set(ctrl->spotlst[ctrl->spotlst_len].pos, 1., 40., 15.);
+	vec3_set(ctrl->spotlst[ctrl->spotlst_len].rgb, 1., 1., 1.);
+	ctrl->spotlst[ctrl->spotlst_len].intensity = 5000000.;
+	++(ctrl->spotlst_len);
+
+	vec3_set(ctrl->spotlst[ctrl->spotlst_len].pos, -20., 20., 5.);
+	vec3_set(ctrl->spotlst[ctrl->spotlst_len].rgb, 1., 0., 0.);
+	ctrl->spotlst[ctrl->spotlst_len].intensity = 2000000.;
+	++(ctrl->spotlst_len);
+
+
 	ctrl->objlst_len = 0;
 
 	ft_printf("{white}BLACK:\n");

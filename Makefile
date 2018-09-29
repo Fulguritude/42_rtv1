@@ -45,14 +45,15 @@ SRCS	:=	camera.c			\
 			coordinates.c		\
 			event_key.c			\
 			image_utils.c		\
+			objects.c			\
 			rays.c				\
 			primitive_utils.c	\
 			primitives_2d.c		\
 			sphere.c			\
 			cylinder.c			\
 			cone.c				\
-			render.c			\
-			objects.c
+			shader.c			\
+			render.c
 			
 
 OBJS	:=	$(SRCS:.c=.o)

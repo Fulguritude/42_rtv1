@@ -48,6 +48,9 @@ Transparent objects:
 		negative, in which case the ray is not refracted but reflected
 
 
+https://fr.wikipedia.org/wiki/Brillant_et_mat
+
+
 Shadows cast by transparent objects and mirror must be treated differently.
 
 

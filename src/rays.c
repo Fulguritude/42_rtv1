@@ -12,32 +12,6 @@
 
 #include "rtv1.h"
 
-#if 0
-/*
-** Principle: you cast a ray from the point of contact in question to the light
-** source(s) and if it intersects with an object, and 
-** 		dist(contact, light) > dist(contact, shadow_ray_contact)
-** then the contact point is hidden from the light source
-*/
-static t_bool	cast_shadow_ray()
-{
-
-}
-#endif
-
-t_color			color_app_lum(t_vec_3d lum)//t_color clr, t_vec_3d lum)
-{
-	t_u8		red;
-	t_u8		grn;
-	t_u8		blu;
-
-//printf("lum: % .3f\n", lum);
-	red = ft_fmax(0., ft_fmin(255., lum[0]));
-	grn	= ft_fmax(0., ft_fmin(255., lum[1]));
-	blu = ft_fmax(0., ft_fmin(255., lum[2]));
-	return (red << 16 | grn << 8 | blu);
-}
-
 void			mat44_app_vec3(t_vec_3d result,
 								t_mat_4b4 const mat,
 								t_vec_3d const v)
@@ -59,7 +33,7 @@ t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
 	return (result);
 }
 
-static t_bool	cast_ray_to_objs(t_control *ctrl, t_ray ray,
+t_bool			trace_ray_to_objs(t_control *ctrl, t_ray ray,
 									t_object **hit_obj, t_ray *res_objray)
 {
 	t_bool		has_inter;
@@ -87,33 +61,6 @@ static t_bool	cast_ray_to_objs(t_control *ctrl, t_ray ray,
 		}
 	}
 	return (has_inter);
-}
-
-static t_color	get_color_from_fixed_objray(t_control *ctrl,
-							t_object const obj, t_ray const objray)
-{
-	t_vec_3d	normal;
-	t_ray		dirlight;
-	t_float		tmp;
-	t_vec_3d	lum;
-
-	obj.get_hnn(dirlight.pos, normal, objray);
-	vec3_scale(lum, APPROX, normal);
-	vec3_add(dirlight.pos, dirlight.pos, lum);
-	mat44_app_vec3(dirlight.pos, obj.o_to_w, dirlight.pos);
-	mat44_app_vec3(normal, obj.n_to_w, normal);
-	vec3_eucl_nrmlz(normal, normal); //necessary ?
-	vec3_sub(dirlight.dir, ctrl->spot.origin, dirlight.pos);
-	tmp = vec3_eucl_quadnorm(dirlight.dir);
-	dirlight.t = sqrt(tmp);
-	vec3_scale(dirlight.dir, 1. / dirlight.t, dirlight.dir); //less costly
-//	vec3_eucl_nrmlz(dirlight.dir, dirlight.dir); //is the costlier version
-	if (cast_ray_to_objs(ctrl, dirlight, NULL, NULL))
-		return (BLACK);
-	vec3_scale(lum,
-		INV_PI * ctrl->spot.intensity * ft_fmax(0., vec3_dot(normal, dirlight.dir)) / tmp,
-		obj.albedo);
-	return (color_app_lum(lum));
 }
 
 /*
@@ -145,7 +92,7 @@ void			cast_rays(t_control *ctrl)
 			vec3_set(ray.dir, j - REN_W / 2, i - REN_H / 2, fov_val);
 			mat44_app_vec3(ray.dir, ctrl->cam.c_to_w, ray.dir);
 			vec3_eucl_nrmlz(ray.dir, ray.dir);
-			if (cast_ray_to_objs(ctrl, ray, &hit_obj, &ray))
+			if (trace_ray_to_objs(ctrl, ray, &hit_obj, &ray))
 				((t_u32 *)ctrl->img_data)[i * REN_W + j] =
 					get_color_from_fixed_objray(ctrl, *hit_obj, ray);
 		}
