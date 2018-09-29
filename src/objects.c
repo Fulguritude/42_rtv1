@@ -112,13 +112,13 @@ ft_printf("{red}init_objects\n");
 	ctrl->spotlst_len = 0;
 
 	vec3_set(ctrl->spotlst[ctrl->spotlst_len].pos, 1., 40., 15.);
-	vec3_set(ctrl->spotlst[ctrl->spotlst_len].rgb, 1., 1., 1.);
-	ctrl->spotlst[ctrl->spotlst_len].intensity = 5000000.;
+	vec3_set(ctrl->spotlst[ctrl->spotlst_len].rgb, 0., 1., 1.);
+	ctrl->spotlst[ctrl->spotlst_len].intensity = 1000000.;
 	++(ctrl->spotlst_len);
 
 	vec3_set(ctrl->spotlst[ctrl->spotlst_len].pos, -20., 20., 5.);
 	vec3_set(ctrl->spotlst[ctrl->spotlst_len].rgb, 1., 0., 0.);
-	ctrl->spotlst[ctrl->spotlst_len].intensity = 2000000.;
+	ctrl->spotlst[ctrl->spotlst_len].intensity = 400000.;
 	++(ctrl->spotlst_len);
 
 
@@ -137,7 +137,7 @@ ft_printf("{red}init_objects\n");
 	init_object(ctrl, (t_mat_3b3){-5., 0., -9., 0.4, 1., 0.4, 0., 0., 0.}, (t_vec_3d){0., 0., 1.}, infcone);
 
 	ft_printf("{white}GREY:\n");
-	init_object(ctrl, (t_mat_3b3){-5., -20., -9., 1., 1., 1., 0., 0., 0.}, (t_vec_3d){0.5, 0.5, 0.5}, plane);
+	init_object(ctrl, (t_mat_3b3){-5., -20., -9., 1., 1., 1., 0., 0., 0.}, (t_vec_3d){0.7, 0.7, 0.7}, plane);
 
 	ft_printf("{yellow}ORANGE:\n");
 	init_object(ctrl, (t_mat_3b3){-10., 0., 1., 10., 1., 2., HALF_PI, HALF_PI / 2., 0.}, (t_vec_3d){1., 0.5, 0.}, disk);

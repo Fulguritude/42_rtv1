@@ -183,6 +183,7 @@ typedef struct	s_object
 	t_vec_3d		scl;
 	t_vec_3d		rot;
 	t_vec_3d		albedo;
+//	t_vec_3d		specul;
 	t_mat_4b4		unit_o_to_w;
 	t_mat_4b4		unit_w_to_o;
 	t_mat_4b4		o_to_w;

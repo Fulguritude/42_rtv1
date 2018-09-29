@@ -157,9 +157,15 @@ static void		shader_get_diffuse(t_vec_3d reslum, t_control *ctrl,
 	vec3_scale(reslum,
 		INV_PI * spot.intensity * ft_fmax(0., vec3_dot(shdr.normal, shdr.dirlight.dir)) / tmp,
 		shdr.obj_albedo);
+	vec3_set(reslum, reslum[0] * spot.rgb[0], reslum[1] * spot.rgb[1], reslum[2] * spot.rgb[2]);
 }
 
-//
+/*
+static void		shader_get_specular(t_vec_3d reslum, t_control *ctrl,
+										t_shader shdr, t_light const spot)
+{
+	return ;
+}*/
 
 /*
 ** Principle: you cast a ray from the point of contact in question to the light
