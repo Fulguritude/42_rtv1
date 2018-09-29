@@ -59,35 +59,10 @@ t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
 	return (result);
 }
 
-static t_color	get_color_from_fixed_objray(t_control *ctrl,
-							t_object const obj, t_ray const objray)
-{
-	t_vec_3d	hitpos;
-	t_vec_3d	normal;
-	t_vec_3d	contact_dirlgt;
-	t_float		tmp;
-	t_vec_3d	lum;
-
-	obj.get_hnn(hitpos, normal, objray);
-	mat44_app_vec3(hitpos, obj.o_to_w, hitpos);
-	mat44_app_vec3(normal, obj.n_to_w, normal);
-	vec3_eucl_nrmlz(normal, normal);
-	vec3_sub(contact_dirlgt, ctrl->spot.origin, hitpos);
-	tmp = vec3_eucl_quadnorm(contact_dirlgt);
-	tmp = 1. / tmp;
-	vec3_scale(contact_dirlgt, sqrt(tmp), contact_dirlgt); //less costly
-	//vec3_eucl_nrmlz(contact_dirlgt, contact_dirlgt); //is the costlier version
-	vec3_scale(lum,
-		INV_PI * ctrl->spot.intensity * ft_fmax(0., vec3_dot(normal, contact_dirlgt)) * tmp,
-		obj.albedo);
-	return (color_app_lum(lum));
-}
-
 static t_bool	cast_ray_to_objs(t_control *ctrl, t_ray ray,
 									t_object **hit_obj, t_ray *res_objray)
 {
 	t_bool		has_inter;
-	t_bool		tmp_bool;
 	t_ray		objray;
 	int			k;
 	t_object	cur_obj;
@@ -98,18 +73,47 @@ static t_bool	cast_ray_to_objs(t_control *ctrl, t_ray ray,
 	{
 		cur_obj = ctrl->objlst[k];
 		objray = ray_x_to_y(cur_obj.w_to_o, cur_obj.unit_w_to_o, ray);
-		if ((tmp_bool = cur_obj.intersect(&objray)))
+		if (cur_obj.intersect(&objray))
 		{
 			if (objray.t < ray.t)
 			{
-				has_inter = has_inter || tmp_bool;
+				has_inter = TRUE;
 				ray.t = objray.t;
-				*hit_obj = &(ctrl->objlst[k]);
-				*res_objray = objray;
+				if (hit_obj)
+					*hit_obj = &(ctrl->objlst[k]);
+				if (res_objray)
+					*res_objray = objray;
 			}
 		}
 	}
 	return (has_inter);
+}
+
+static t_color	get_color_from_fixed_objray(t_control *ctrl,
+							t_object const obj, t_ray const objray)
+{
+	t_vec_3d	normal;
+	t_ray		dirlight;
+	t_float		tmp;
+	t_vec_3d	lum;
+
+	obj.get_hnn(dirlight.pos, normal, objray);
+	vec3_scale(lum, APPROX, normal);
+	vec3_add(dirlight.pos, dirlight.pos, lum);
+	mat44_app_vec3(dirlight.pos, obj.o_to_w, dirlight.pos);
+	mat44_app_vec3(normal, obj.n_to_w, normal);
+	vec3_eucl_nrmlz(normal, normal); //necessary ?
+	vec3_sub(dirlight.dir, ctrl->spot.origin, dirlight.pos);
+	tmp = vec3_eucl_quadnorm(dirlight.dir);
+	dirlight.t = sqrt(tmp);
+	vec3_scale(dirlight.dir, 1. / dirlight.t, dirlight.dir); //less costly
+//	vec3_eucl_nrmlz(dirlight.dir, dirlight.dir); //is the costlier version
+	if (cast_ray_to_objs(ctrl, dirlight, NULL, NULL))
+		return (BLACK);
+	vec3_scale(lum,
+		INV_PI * ctrl->spot.intensity * ft_fmax(0., vec3_dot(normal, dirlight.dir)) / tmp,
+		obj.albedo);
+	return (color_app_lum(lum));
 }
 
 /*

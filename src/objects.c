@@ -109,8 +109,8 @@ void				init_object(t_control *ctrl,
 void				init_objects(t_control *ctrl)
 {
 ft_printf("{red}init_objects\n");
-	vec3_set(ctrl->spot.origin, 1., 10., 15.);
-	ctrl->spot.intensity = 500000.;
+	vec3_set(ctrl->spot.origin, 1., 40., 15.);
+	ctrl->spot.intensity = 5000000.;
 	ctrl->objlst_len = 0;
 
 	ft_printf("{white}BLACK:\n");
