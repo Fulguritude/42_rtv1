@@ -116,6 +116,8 @@ typedef struct	s_shader
 	t_ray		dirlight;
 	t_vec_3d	normal;
 	t_vec_3d	obj_albedo;
+	t_vec_3d	obj_specul;
+	t_vec_3d	objray_dir;
 }				t_shader;
 
 /*
@@ -183,7 +185,7 @@ typedef struct	s_object
 	t_vec_3d		scl;
 	t_vec_3d		rot;
 	t_vec_3d		albedo;
-//	t_vec_3d		specul;
+	t_vec_3d		specul;
 	t_mat_4b4		unit_o_to_w;
 	t_mat_4b4		unit_w_to_o;
 	t_mat_4b4		o_to_w;
@@ -278,6 +280,8 @@ t_color			get_color_from_fixed_objray(t_control *ctrl,
 t_bool			get_realroots_quadpoly(t_float *root1, t_float *root2,
 									t_vec_3d const quadpoly);
 void			get_ray_hitpos(t_vec_3d hitpos, t_ray const objray);
+void			get_reflect(t_vec_3d res,
+							t_vec_3d const incident, t_vec_3d const normal);
 
 /*
 ** primitives_2d.c

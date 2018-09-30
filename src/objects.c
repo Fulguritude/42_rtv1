@@ -72,18 +72,6 @@ static t_hnn_func		get_hnn_func(t_objtype const type)
 	return (res);
 }
 
-void				print_object(t_object const obj)
-{
-	printf("pos: (%f, %f, %f)\n"
-			"scl: (%f, %f, %f)\n"
-			"rot: (%f, %f, %f)\n"
-			"abd: (%f, %f, %f)\n",
-			obj.pos[0], obj.pos[1], obj.pos[2],
-			obj.scl[0], obj.scl[1], obj.scl[2],
-			obj.rot[0], obj.rot[1], obj.rot[2],
-			obj.albedo[0], obj.albedo[1], obj.albedo[2]);
-}
-
 void				init_object(t_control *ctrl,
 							t_mat_3b3 const transforms,
 							t_vec_3d const rgb_albedo,
@@ -94,7 +82,6 @@ void				init_object(t_control *ctrl,
 	t_vec_3d	xyz_scaling;
 	t_vec_3d	xyz_rot_rad;
 
-
 	vec3_cpy(world_pos, (t_float *)transforms);
 	vec3_cpy(xyz_scaling, (t_float *)transforms + 3);
 	vec3_cpy(xyz_rot_rad, (t_float *)transforms + 6);
@@ -102,6 +89,9 @@ void				init_object(t_control *ctrl,
 	obj.type = type;
 	obj.intersect = get_inter_func(type);
 	obj.get_hnn = get_hnn_func(type);
+
+vec3_set(obj.specul, 4, 4, 4);
+
 	ctrl->objlst[(ctrl->objlst_len)++] = obj;
 }
 
@@ -112,7 +102,7 @@ ft_printf("{red}init_objects\n");
 	ctrl->spotlst_len = 0;
 
 	vec3_set(ctrl->spotlst[ctrl->spotlst_len].pos, 1., 40., 15.);
-	vec3_set(ctrl->spotlst[ctrl->spotlst_len].rgb, 0., 1., 1.);
+	vec3_set(ctrl->spotlst[ctrl->spotlst_len].rgb, 1., 1., 1.);
 	ctrl->spotlst[ctrl->spotlst_len].intensity = 1000000.;
 	++(ctrl->spotlst_len);
 
@@ -143,7 +133,7 @@ ft_printf("{red}init_objects\n");
 	init_object(ctrl, (t_mat_3b3){-10., 0., 1., 10., 1., 2., HALF_PI, HALF_PI / 2., 0.}, (t_vec_3d){1., 0.5, 0.}, disk);
 
 	ft_printf("{magenta}PURPLE:\n");
-	init_object(ctrl, (t_mat_3b3){10., 1., 1., 10., 10., 5., HALF_PI, -HALF_PI / 2., 0.}, (t_vec_3d){0.7, 0.1, 0.5}, square);
+	init_object(ctrl, (t_mat_3b3){1., 41., 16., 10., 10., 5., HALF_PI, HALF_PI / 2., 0.}, (t_vec_3d){0.7, 0.1, 0.5}, square);
 
 	ft_printf("{cyan}TURQUOISE:\n");
 	init_object(ctrl, (t_mat_3b3){20., 0., 0., 3., 5., 1., HALF_PI / 2, -HALF_PI / 2., HALF_PI}, (t_vec_3d){0.1, 0.5, 0.8}, cylinder);

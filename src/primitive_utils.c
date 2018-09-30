@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-t_bool		get_realroots_quadpoly(t_float *root1, t_float *root2,
+t_bool			get_realroots_quadpoly(t_float *root1, t_float *root2,
 									t_vec_3d const quadpoly)
 {
 	t_float		delta;
@@ -40,4 +40,25 @@ inline void		get_ray_hitpos(t_vec_3d hitpos, t_ray const objray)
 {
 	vec3_scale(hitpos, objray.t, objray.dir);
 	vec3_add(hitpos, hitpos, objray.pos);
+}
+
+inline void		get_reflect(t_vec_3d res,
+						t_vec_3d const incident, t_vec_3d const normal)
+{
+	vec3_scale(res, -2 * vec3_dot(incident, normal), normal);
+	vec3_add(res, res, incident);
+}
+
+inline void		print_object(t_object const obj)
+{
+	printf("pos: (%f, %f, %f)\n"
+			"scl: (%f, %f, %f)\n"
+			"rot: (%f, %f, %f)\n"
+			"abd: (%f, %f, %f)\n"
+			"spc: (%f, %f, %f)\n",
+			obj.pos[0], obj.pos[1], obj.pos[2],
+			obj.scl[0], obj.scl[1], obj.scl[2],
+			obj.rot[0], obj.rot[1], obj.rot[2],
+			obj.albedo[0], obj.albedo[1], obj.albedo[2],
+			obj.specul[0], obj.specul[1], obj.specul[2]);
 }
