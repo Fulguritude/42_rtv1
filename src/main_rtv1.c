@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 20:27:46 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/09/10 03:17:01 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 12:14:37 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,20 @@ static void		init_mouse_events(t_control *ctrl)
 }
 */
 
-int		main(void)
+int		main(int argc, char **argv)
 {
 	t_control	ctrl;
 
+	if (argc != 2)
+		exit_error("rtv1 usage: \"./rtv1 [filepath]\"", 0);
 	init_mlx(&ctrl);
-	init_objects(&ctrl);
+
 	vec3_set(ctrl.cam.polar_pos, 10., HALF_PI, HALF_PI);
-	
+	ctrl.spotlst_len = 0;
+	ctrl.objlst_len = 0;
+
+	read_rt_file(&ctrl, argv[1]);
+	//init_objects(&ctrl);	
 
 	mlx_key_hook(ctrl.win_ptr, handle_key, &ctrl);
 	mlx_expose_hook(ctrl.win_ptr, handle_redraw, &ctrl);

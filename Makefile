@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2018/08/31 22:19:30 by fulguritu        ###   ########.fr        #
+#    Updated: 2018/10/01 10:52:08 by fulguritu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	:=	rtv1
 LFT		:=	libft.a
 
 
-PLATFORM:=	LINUX
+PLATFORM:=	MACOS
 CC		:=	gcc
 CFLAGS	:=	-Wall -Werror -Wextra #-O3
 
@@ -45,6 +45,7 @@ SRCS	:=	camera.c			\
 			coordinates.c		\
 			event_key.c			\
 			image_utils.c		\
+			reader.c			\
 			objects.c			\
 			rays.c				\
 			primitive_utils.c	\
@@ -70,7 +71,7 @@ RED		:=	"\033[0;31m"
 GREEN	:=	"\033[0;32m"
 
 $(NAME): $(LFTDIR)$(LFT) $(OBJS) $(OBJ_MAIN) $(HDRS)
-	@echo "Compiling "$@": "$@" -> \c"$(RED)
+	@echo "Compiling software: "$@" -> \c"$(RED)
 	@$(CC) $(CFLAGS) $(DBFLAGS) $(OBJS) $(OBJ_MAIN) $(LIBS) -o $@
 	@echo $(GREEN)"OK!"$(RESET)
 

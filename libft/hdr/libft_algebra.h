@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/20 18:44:44 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/05/20 18:45:13 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 11:54:03 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ t_float			vec3_eucl_quaddist(t_vec_3d const v1, t_vec_3d const v2);
 */
 void			mat33_set(t_mat_3b3 result, t_vec_3d const v0,
 							t_vec_3d const v1, t_vec_3d const v2);
+void			mat33_cpy(t_mat_3b3 result, t_mat_3b3 const mat);
 void			mat33_set_diagmat(t_mat_3b3 result,
 							t_vec_3d const coefs);
 void			mat33_add(t_mat_3b3 result,
@@ -141,6 +142,7 @@ void			mat44_subbloc33_ij(t_mat_3b3 result, t_mat_4b4 const m,
 							int i, int j);
 void			mat44_inv(t_mat_4b4 result, t_mat_4b4 const m);
 
+void			print_mat33(char const *title, t_mat_3b3 const mat);
 void			print_mat44(char const *title, t_mat_4b4 const mat);
 void			print_vec4(char const *title, t_vec_4d const v);
 

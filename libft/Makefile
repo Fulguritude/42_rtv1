@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2018/09/18 19:30:33 by fulguritu        ###   ########.fr        #
+#    Updated: 2018/10/01 10:14:55 by fulguritu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -331,6 +331,7 @@ SRC_MATH_ALG := algebra_print.c			\
 				mat44.c					\
 				vec3_op.c				\
 				mat33_op.c				\
+				mat33_op2.c				\
 				mat44_op.c				\
 				vec3_eucl.c
 

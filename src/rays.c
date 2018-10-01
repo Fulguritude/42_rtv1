@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:00:36 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/09/16 23:00:57 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 10:05:33 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void			mat44_app_vec3(t_vec_3d result,
 }
 
 t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
-						t_mat_4b4 unit_x_to_y, t_ray const ray)
+						t_mat_3b3 linear_x_to_y, t_ray const ray)
 {
 	t_ray		result;
 
 	mat44_app_vec3(result.pos, x_to_y, ray.pos);
-	mat44_app_vec3(result.dir, unit_x_to_y, ray.dir);
+	mat33_app_vec(result.dir, linear_x_to_y, ray.dir);
 	result.t = ray.t;
 	return (result);
 }
@@ -46,7 +46,7 @@ t_bool			trace_ray_to_objs(t_control *ctrl, t_ray ray,
 	while (++k < ctrl->objlst_len)
 	{
 		cur_obj = ctrl->objlst[k];
-		objray = ray_x_to_y(cur_obj.w_to_o, cur_obj.unit_w_to_o, ray);
+		objray = ray_x_to_y(cur_obj.w_to_o, cur_obj.linear_w_to_o, ray);
 		if (cur_obj.intersect(&objray))
 		{
 			if (objray.t < ray.t)

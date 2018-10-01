@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/29 07:05:34 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/09/29 07:05:47 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 10:17:52 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_color			get_color_from_fixed_objray(t_control *ctrl,
 	vec3_eucl_nrmlz(shdr.normal, shdr.normal); //necessary ?
 	vec3_cpy(shdr.obj_albedo, obj.albedo);
 	vec3_cpy(shdr.obj_specul, obj.specul);
-	mat44_app_vec3(shdr.objray_dir, obj.unit_o_to_w, objray.dir); //world_space
+	mat33_app_vec(shdr.objray_dir, obj.linear_o_to_w, objray.dir); //world_space
 //	vec3_cpy(shdr.objray_dir, objray.dir);//object space
 	vec3_set(lum, 0., 0., 0.);
 	i = -1;

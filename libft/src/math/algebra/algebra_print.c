@@ -6,12 +6,25 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/26 02:25:16 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/09/26 02:25:31 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 11:54:50 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_algebra.h"
 #include "ft_printf.h"
+
+void		print_mat33(char const *title, t_mat_3b3 const mat)
+{
+	ft_printf("%s:\n"
+		"\tx: (%.5f, %.5f, %.5f)\n"
+		"\ty: (%.5f, %.5f, %.5f)\n"
+		"\tz: (%.5f, %.5f, %.5f)\n",
+		title,
+		mat[0], mat[1], mat[2],
+		mat[3], mat[4], mat[5],
+		mat[6], mat[7], mat[8]);
+}
+
 
 void		print_mat44(char const *title, t_mat_4b4 const mat)
 {

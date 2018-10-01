@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/09/10 03:17:05 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 11:59:47 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 # include "libft/hdr/libft.h"
 # include "libft/hdr/libft_algebra.h"
 # include "libft/hdr/ft_printf.h"
-# include "mlx_event_lin.h"
+# include "libft/hdr/get_next_line.h"
+# include "mlx_event_mac.h"
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -45,6 +46,10 @@
 
 # define MAX_LGT_NB		16
 # define MAX_OBJ_NB		32
+# define MAX_FILE_LN_NB	1000
+
+# define OBJID_LN_CHARS	"ABCDEFGHIJKLMNOPQRSTUVWXYZ \t"
+# define FLOAT_LN_CHARS	"0123456789.+-abcdefpxABCDEFPX \t"
 
 typedef struct	s_point
 {
@@ -129,6 +134,7 @@ typedef struct	s_shader
 typedef	enum	e_objtype
 {
 	null_obj,
+	light,
 	sphere,
 	plane,
 	disk,
@@ -186,8 +192,8 @@ typedef struct	s_object
 	t_vec_3d		rot;
 	t_vec_3d		albedo;
 	t_vec_3d		specul;
-	t_mat_4b4		unit_o_to_w;
-	t_mat_4b4		unit_w_to_o;
+	t_mat_3b3		linear_o_to_w;
+	t_mat_3b3		linear_w_to_o;
 	t_mat_4b4		o_to_w;
 	t_mat_4b4		w_to_o;
 	t_mat_4b4		n_to_w;
@@ -229,6 +235,11 @@ void			mlximg_fill(t_control *ctrl, t_u32 val);
 void			mlximg_clear(t_control *ctrl);
 
 /*
+** reader.c
+*/
+void			read_rt_file(t_control *ctrl, char const *fpath);
+ 
+/*
 ** camera.c
 **
 ** static void		build_cam_matrices(t_mat_4b4 result, t_camera const cam);
@@ -266,7 +277,7 @@ void			cast_rays(t_control *ctrl);
 /*
 ** objects.c
 */
-void			init_objects(t_control *ctrl);
+void			build_obj(t_object *obj, t_objtype type);
 
 /*
 ** shader.c
@@ -282,6 +293,7 @@ t_bool			get_realroots_quadpoly(t_float *root1, t_float *root2,
 void			get_ray_hitpos(t_vec_3d hitpos, t_ray const objray);
 void			get_reflect(t_vec_3d res,
 							t_vec_3d const incident, t_vec_3d const normal);
+void			print_object(t_object const obj);
 
 /*
 ** primitives_2d.c

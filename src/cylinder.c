@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/27 19:23:19 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/09/27 19:23:21 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 10:17:14 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static inline t_float		vec3_ynull_dot(t_vec_3d const v1, t_vec_3d const v2)
 **	(dx^2 + dz^2)		* t^2				== 0
 */
 
-t_bool		intersect_ray_infcylinder(t_ray *objray)
+t_bool						intersect_ray_infcylinder(t_ray *objray)
 {
 	t_vec_3d	quadpoly;
 	t_float		root1;
@@ -66,7 +66,7 @@ t_bool		intersect_ray_infcylinder(t_ray *objray)
 **	{p = (x, +0.5, z) | x^2 + z^2 <= 1}
 */
 
-t_bool		intersect_ray_cylinder(t_ray *objray)
+t_bool						intersect_ray_cylinder(t_ray *objray)
 {
 	t_ray		tmp_ray;
 	t_float		tmp;
@@ -103,15 +103,15 @@ t_bool		intersect_ray_cylinder(t_ray *objray)
 **	the y coordinate to 0; as for every point on the cylinder x^2 + z^2 == 1
 */
 
-void		get_hnn_infcylinder(t_vec_3d hitpos, t_vec_3d normal,
-									t_ray const objray)
+void						get_hnn_infcylinder(t_vec_3d hitpos,
+								t_vec_3d normal, t_ray const objray)
 {
 	get_ray_hitpos(hitpos, objray);
 	vec3_set(normal, hitpos[0], 0., hitpos[2]);
 }
 
-void		get_hnn_cylinder(t_vec_3d hitpos, t_vec_3d normal,
-									t_ray const objray)
+void						get_hnn_cylinder(t_vec_3d hitpos,
+								t_vec_3d normal, t_ray const objray)
 {
 	get_ray_hitpos(hitpos, objray);
 	if (ft_fabs(hitpos[1] - 0.5) < APPROX)

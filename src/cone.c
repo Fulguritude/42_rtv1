@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/27 19:23:31 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/09/27 19:23:39 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 05:46:41 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,35 @@ t_bool			intersect_ray_infcone(t_ray *objray)
 ** This means the position of the cone in world space should coincide with
 ** the point of the cone.
 */
-
 /*
-t_bool			intersect_ray_cone()
+t_bool			intersect_ray_cone(t_ray *objray)
 {
-	
+	t_ray		tmp_ray;
+	t_float		tmp;
+	t_bool		is_in_infcone;
+	t_bool		is_in_hrz_area;
+
+	if ((is_in_infcone = (vec3_yneg_dot(objray->pos, objray->pos) <= 0) &&
+		(is_in_hrz_area = (0. <= objray->pos[1] && objray->pos[1] <= 1.))))
+		return (FALSE);
+	tmp = 1. / 0.;
+	tmp_ray = *objray;
+	if (intersect_ray_infcone(&tmp_ray))
+	{
+		tmp = tmp_ray.pos[1] + tmp_ray.t * tmp_ray.dir[1];
+		if (0. < tmp && tmp < 1.)
+			tmp = tmp_ray.t;
+		else
+			tmp = 1. / 0.;
+	}
+	tmp_ray.t = objray->t;
+	tmp_ray.pos[1] += 1.;
+	if (!is_in_hrz_area && intersect_ray_disk(&tmp_ray))
+		tmp = ft_fmin(tmp, tmp_ray.t);
+	objray->t = ft_fmin(tmp, objray->t);
+	return (objray->t == tmp);
 }
 */
-
 /*
 ** Notice that if one reflects hitpos over the xz-plane, one obtains a scaled
 **	version of the normal at hitpos.
