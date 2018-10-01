@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 03:50:29 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 12:23:16 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 16:40:18 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static t_inter_func		get_inter_func(t_objtype const type)
 	res = type == infcylinder ? &intersect_ray_infcylinder : res;
 	res = type == disk ? &intersect_ray_disk : res;
 	res = type == square ? &intersect_ray_square : res;
-//	res = type == cone ? &intersect_ray_cone : res;
+	res = type == cone ? &intersect_ray_cone : res;
 	res = type == cylinder ? &intersect_ray_cylinder : res;
 	return (res);
 }
@@ -34,7 +34,7 @@ static t_hnn_func		get_hnn_func(t_objtype const type)
 	res = type == sphere ? &get_hnn_sphere : NULL;
 	res = type == infcone ? &get_hnn_infcone : res;
 	res = type == infcylinder ? &get_hnn_infcylinder : res;
-//	res = type == cone ? &get_hnn_cone : res;
+	res = type == cone ? &get_hnn_cone : res;
 	res = type == cylinder ? &get_hnn_cylinder : res;
 	res = type == plane || type == disk || type == square ? get_hnn_plane : res;
 	return (res);

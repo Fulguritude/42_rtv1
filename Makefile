@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2018/10/01 10:52:08 by fulguritu        ###   ########.fr        #
+#    Updated: 2018/10/01 14:24:11 by fulguritu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LFT		:=	libft.a
 
 PLATFORM:=	MACOS
 CC		:=	gcc
-CFLAGS	:=	-Wall -Werror -Wextra #-O3
+CFLAGS	:=	-Wall -Werror -Wextra -O3
 
 ifeq ($(PLATFORM),LINUX)
 DBFLAGS =	-fsanitize=address

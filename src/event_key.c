@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/14 20:49:10 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/07/14 20:49:13 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 14:24:37 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,10 @@ int			handle_key(int key, void *param)
 		ctrl->cam.anchor[1] -= 0.5;
 	else if (key == KEY_NUMPAD_8) //up
 		ctrl->cam.anchor[1] += 0.5;
+	else if (key == KEY_D)
+		ctrl->show_diffuse = !(ctrl->show_diffuse);
+	else if (key == KEY_S)
+		ctrl->show_specular = !(ctrl->show_specular);
 	else
 		return (1);
 //	else if (key == KEY_SPACE)

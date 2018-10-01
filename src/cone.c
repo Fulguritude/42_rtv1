@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/27 19:23:31 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 05:46:41 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 16:46:47 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ t_bool			intersect_ray_infcone(t_ray *objray)
 		root2 = root1;
 	if (root1 > objray->t && root2 > objray->t)
 		return (FALSE);
-	objray->t = ft_fmin(root1, root2);
+	if ((objray->dir[1] * root1 + objray->pos[1]) *
+		(objray->dir[1] * root2 + objray->pos[1]) >= 0.)
+		objray->t = ft_fmin(root1, root2);
+	else
+		objray->t = ft_fmax(root1, root2);
 	return (TRUE);
 }
 
@@ -68,7 +72,7 @@ t_bool			intersect_ray_infcone(t_ray *objray)
 ** This means the position of the cone in world space should coincide with
 ** the point of the cone.
 */
-/*
+
 t_bool			intersect_ray_cone(t_ray *objray)
 {
 	t_ray		tmp_ray;
@@ -90,13 +94,28 @@ t_bool			intersect_ray_cone(t_ray *objray)
 			tmp = 1. / 0.;
 	}
 	tmp_ray.t = objray->t;
-	tmp_ray.pos[1] += 1.;
-	if (!is_in_hrz_area && intersect_ray_disk(&tmp_ray))
+	tmp_ray.pos[1] -= 1.;
+	if (objray->pos[1] > 1. && intersect_ray_disk(&tmp_ray))
 		tmp = ft_fmin(tmp, tmp_ray.t);
 	objray->t = ft_fmin(tmp, objray->t);
 	return (objray->t == tmp);
 }
-*/
+
+void			get_hnn_cone(t_vec_3d hitpos, t_vec_3d normal,
+									t_ray const objray)
+{
+	get_ray_hitpos(hitpos, objray);
+	if (ft_fabs(hitpos[1] - 1) < APPROX)
+	{
+		vec3_set(normal, 0, 1., 0.);
+	}
+	else
+	{
+		vec3_set(normal, hitpos[0], -hitpos[1], hitpos[2]);
+		vec3_eucl_nrmlz(normal, normal);
+	}
+}
+
 /*
 ** Notice that if one reflects hitpos over the xz-plane, one obtains a scaled
 **	version of the normal at hitpos.

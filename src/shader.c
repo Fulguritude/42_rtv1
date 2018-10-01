@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/29 07:05:34 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 10:17:52 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 14:13:25 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,17 @@ static void		shader_get_diff_n_spec(t_vec_3d reslum, t_control *ctrl,
 		vec3_set(reslum, 0., 0., 0.);
 		return ;
 	}
-	vec3_scale(reslum,
-		INV_PI * spot.intensity * ft_fmax(0., vec3_dot(shdr.normal, shdr.dirlight.dir)) / tmp,
-		shdr.obj_albedo);
+	if (ctrl->show_diffuse)
+		vec3_scale(reslum, INV_PI * spot.intensity * ft_fmax(0.,
+			vec3_dot(shdr.normal, shdr.dirlight.dir)) / tmp, shdr.obj_albedo);
 	vec3_set(reslum, reslum[0] * spot.rgb[0], reslum[1] * spot.rgb[1], reslum[2] * spot.rgb[2]); //schur/hadamard product ?
 	vec3_scale(ref, -1., shdr.dirlight.dir);
 	get_reflect(ref, ref, shdr.normal);
 	tmp = ft_fmax(0., -vec3_dot(ref, shdr.objray_dir));
 	vec3_set(spec, powf(tmp, shdr.obj_specul[0]), powf(tmp, shdr.obj_specul[1]), powf(tmp, shdr.obj_specul[2]));
 	vec3_set(spec, spec[0] * spot.rgb[0], spec[1] * spot.rgb[1], spec[2] * spot.rgb[2]);
-	vec3_add(reslum, reslum, spec);
+	if (ctrl->show_specular)
+		vec3_add(reslum, reslum, spec);
 }
 
 /*

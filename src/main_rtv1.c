@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 20:27:46 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 12:14:37 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 14:14:34 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ int		main(int argc, char **argv)
 	vec3_set(ctrl.cam.polar_pos, 10., HALF_PI, HALF_PI);
 	ctrl.spotlst_len = 0;
 	ctrl.objlst_len = 0;
+	ctrl.show_diffuse = TRUE;
+	ctrl.show_specular = TRUE;
 
 	read_rt_file(&ctrl, argv[1]);
 	//init_objects(&ctrl);	

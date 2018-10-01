@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 11:59:47 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 16:43:40 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,6 @@
 # define MAX_LGT_NB		16
 # define MAX_OBJ_NB		32
 # define MAX_FILE_LN_NB	1000
-
-# define OBJID_LN_CHARS	"ABCDEFGHIJKLMNOPQRSTUVWXYZ \t"
-# define FLOAT_LN_CHARS	"0123456789.+-abcdefpxABCDEFPX \t"
 
 typedef struct	s_point
 {
@@ -216,7 +213,9 @@ typedef struct	s_control
 	int				endian;
 	char			*img_data;
 	t_camera		cam;
-	int				debug;
+	t_bool			debug;
+	t_bool			show_diffuse;
+	t_bool			show_specular;
 	t_point			mouse;
 	t_object		objlst[MAX_OBJ_NB];
 	int				objlst_len;
@@ -316,6 +315,9 @@ void			get_hnn_sphere(t_vec_3d hitpos, t_vec_3d normal,
 */
 t_bool			intersect_ray_infcone(t_ray *objray);
 void			get_hnn_infcone(t_vec_3d hitpos, t_vec_3d normal,
+								t_ray const objray);
+t_bool			intersect_ray_cone(t_ray *objray);
+void			get_hnn_cone(t_vec_3d hitpos, t_vec_3d normal,
 								t_ray const objray);
 /*
 ** cylinder.c

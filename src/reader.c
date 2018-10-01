@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/01 06:00:02 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 13:49:04 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/01 16:45:31 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ static void			read_rt_file_context_line(t_control *ctrl,
 		r_rt_f_set_obj(ctrl, fd, disk);
 	else if (ft_strnequ(str, "SQUARE", 6))
 		r_rt_f_set_obj(ctrl, fd, square);
+	else if (ft_strnequ(str, "CONE", 4))
+		r_rt_f_set_obj(ctrl, fd, cone);
 	else if (ft_strnequ(str, "CAMERA", 6))
 	{
 		r_rt_f_read_vec3_line(ctrl->cam.anchor, fd);
