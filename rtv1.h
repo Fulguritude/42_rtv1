@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 16:43:40 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/03 15:56:55 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include "libft/hdr/libft_algebra.h"
 # include "libft/hdr/ft_printf.h"
 # include "libft/hdr/get_next_line.h"
-# include "mlx_event_mac.h"
+# include "mlx_event_lin.h"
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -110,9 +110,6 @@ typedef struct	s_light
 	t_vec_3d	rgb;
 }				t_light;
 
-/*
-**
-*/
 typedef struct	s_shader
 {
 	t_ray		dirlight;
@@ -136,11 +133,14 @@ typedef	enum	e_objtype
 	plane,
 	disk,
 	square,
+	triangle,
 	infcylinder,
 	cylinder,
 	infcone,
 	cone,
-	cube
+	cube,
+	paraboloid,
+	saddle
 }				t_objtype;
 
 /*
@@ -239,6 +239,16 @@ void			mlximg_clear(t_control *ctrl);
 void			read_rt_file(t_control *ctrl, char const *fpath);
  
 /*
+** reader_utils.c
+**
+** static void			r_rt_f_read_vec3_line(t_vec_3d res, int fd);
+*/
+void			r_rt_f_setup_light(t_control *ctrl, int fd);
+void			r_rt_f_set_obj(t_control *ctrl, int fd, t_objtype type);
+void			r_rt_f_set_cam(t_control *ctrl, int fd);
+
+
+/*
 ** camera.c
 **
 ** static void		build_cam_matrices(t_mat_4b4 result, t_camera const cam);
@@ -270,7 +280,7 @@ void			mat44_app_vec3(t_vec_3d result,
 								t_mat_4b4 const mat,
 								t_vec_3d const v);
 t_bool			trace_ray_to_objs(t_control *ctrl, t_ray ray,
-									t_object **hit_obj, t_ray *res_objray);
+									t_object *hit_obj, t_ray *res_objray);
 void			cast_rays(t_control *ctrl);
 
 /*
@@ -300,6 +310,7 @@ void			print_object(t_object const obj);
 t_bool			intersect_ray_plane(t_ray *objray);
 t_bool			intersect_ray_disk(t_ray *objray);
 t_bool			intersect_ray_square(t_ray *objray);
+t_bool			intersect_ray_triangle(t_ray *objray);
 void			get_hnn_plane(t_vec_3d hitpos, t_vec_3d normal,
 							t_ray const objray);
 
@@ -328,5 +339,22 @@ void			get_hnn_infcylinder(t_vec_3d hitpos, t_vec_3d normal,
 t_bool			intersect_ray_cylinder(t_ray *objray);
 void			get_hnn_cylinder(t_vec_3d hitpos, t_vec_3d normal,
 									t_ray const objray);
+
+/*
+** paraboloid.c
+*/
+t_bool			intersect_ray_paraboloid(t_ray *objray);
+void			get_hnn_paraboloid(t_vec_3d hitpos,
+								t_vec_3d normal, t_ray const objray);
+t_bool			intersect_ray_saddle(t_ray *objray);
+void			get_hnn_saddle(t_vec_3d hitpos,
+								t_vec_3d normal, t_ray const objray);
+
+/*
+** cube.c
+*/
+t_bool			intersect_ray_cube(t_ray *objray);
+void			get_hnn_cube(t_vec_3d hitpos,
+								t_vec_3d normal, t_ray const objray);
 
 #endif

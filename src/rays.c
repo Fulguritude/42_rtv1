@@ -34,7 +34,7 @@ t_ray			ray_x_to_y(t_mat_4b4 const x_to_y,
 }
 
 t_bool			trace_ray_to_objs(t_control *ctrl, t_ray ray,
-									t_object **hit_obj, t_ray *res_objray)
+									t_object *hit_obj, t_ray *res_objray)
 {
 	t_bool		has_inter;
 	t_ray		objray;
@@ -54,7 +54,7 @@ t_bool			trace_ray_to_objs(t_control *ctrl, t_ray ray,
 				has_inter = TRUE;
 				ray.t = objray.t;
 				if (hit_obj)
-					*hit_obj = &(ctrl->objlst[k]);
+					*hit_obj = ctrl->objlst[k];
 				if (res_objray)
 					*res_objray = objray;
 			}
@@ -68,7 +68,7 @@ t_bool			trace_ray_to_objs(t_control *ctrl, t_ray ray,
 **
 ** Intersections should be tested for in world space. Note that since there is
 ** no translation on it, as all rays start at (0., 0., 0.) in cam space,
-** ray.dir can be normalized after c_to_w, rather than normalizing before and 
+** ray.dir can be normalized after c_to_w, rather than normalizing before and
 ** building a "unit_c_to_w" matrix.
 */
 
@@ -78,7 +78,7 @@ void			cast_rays(t_control *ctrl)
 	int			j;
 	t_ray		ray;
 	t_float		fov_val;
-	t_object	*hit_obj;
+	t_object	hit_obj;
 
 	fov_val = -REN_W / (2 * tan(ctrl->cam.hrz_fov));
 	i = -1;
@@ -94,7 +94,7 @@ void			cast_rays(t_control *ctrl)
 			vec3_eucl_nrmlz(ray.dir, ray.dir);
 			if (trace_ray_to_objs(ctrl, ray, &hit_obj, &ray))
 				((t_u32 *)ctrl->img_data)[i * REN_W + j] =
-					get_color_from_fixed_objray(ctrl, *hit_obj, ray);
+					get_color_from_fixed_objray(ctrl, hit_obj, ray);
 		}
 	}
 }

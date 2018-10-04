@@ -88,10 +88,7 @@ t_bool			intersect_ray_cone(t_ray *objray)
 	if (intersect_ray_infcone(&tmp_ray))
 	{
 		tmp = tmp_ray.pos[1] + tmp_ray.t * tmp_ray.dir[1];
-		if (0. < tmp && tmp < 1.)
-			tmp = tmp_ray.t;
-		else
-			tmp = 1. / 0.;
+		tmp = 0. < tmp && tmp < 1. ? tmp_ray.t : 1. / 0.;
 	}
 	tmp_ray.t = objray->t;
 	tmp_ray.pos[1] -= 1.;
@@ -100,6 +97,20 @@ t_bool			intersect_ray_cone(t_ray *objray)
 	objray->t = ft_fmin(tmp, objray->t);
 	return (objray->t == tmp);
 }
+
+/*
+** Notice that if one reflects hitpos over the xz-plane, one obtains a scaled
+**	version of the normal at hitpos.
+*/
+
+void			get_hnn_infcone(t_vec_3d hitpos, t_vec_3d normal,
+									t_ray const objray)
+{
+	get_ray_hitpos(hitpos, objray);
+	vec3_set(normal, hitpos[0], -hitpos[1], hitpos[2]);
+	vec3_eucl_nrmlz(normal, normal);
+}
+
 
 void			get_hnn_cone(t_vec_3d hitpos, t_vec_3d normal,
 									t_ray const objray)
@@ -114,17 +125,4 @@ void			get_hnn_cone(t_vec_3d hitpos, t_vec_3d normal,
 		vec3_set(normal, hitpos[0], -hitpos[1], hitpos[2]);
 		vec3_eucl_nrmlz(normal, normal);
 	}
-}
-
-/*
-** Notice that if one reflects hitpos over the xz-plane, one obtains a scaled
-**	version of the normal at hitpos.
-*/
-
-void			get_hnn_infcone(t_vec_3d hitpos, t_vec_3d normal,
-									t_ray const objray)
-{
-	get_ray_hitpos(hitpos, objray);
-	vec3_set(normal, hitpos[0], -hitpos[1], hitpos[2]);
-	vec3_eucl_nrmlz(normal, normal);
 }

@@ -26,7 +26,7 @@
 ** single '\n', it must return NWL_RD, even if the return string is empty.
 */
 
-# define BUFF_SIZE 16
+# define BUFF_SIZE 4096
 # define NWL_RD 1
 # define EOF_RD 0
 # define ERR_RD -1

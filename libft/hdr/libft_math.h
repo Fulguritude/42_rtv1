@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/19 22:32:41 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/04/19 22:32:42 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/04 09:08:04 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,12 @@ double					ft_ln(double lf);
 ** precision up to decim_prec.
 */
 double					ft_logn(double lf, double n);
+
+/*
+** Returns true is if x is in the closed interval [start; end].
+*/
+t_bool					ft_float_in_interval(t_float x,
+									t_float start, t_float end);
 
 /*
 ** ========== Str-Int Conversion Functions ==========

@@ -291,7 +291,8 @@ SRC_MATH_OP :=	ft_abs.c					\
 				ft_ilog2.c					\
 				ft_exp.c					\
 				ft_ln.c						\
-				ft_logn.c
+				ft_logn.c					\
+				ft_float_in_interval.c
 
 SRC_MATH_APA :=	ft_vlqnew.c						\
 				ft_atovlq.c						\

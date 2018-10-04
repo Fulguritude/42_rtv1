@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2018/10/01 14:24:11 by fulguritu        ###   ########.fr        #
+#    Updated: 2018/10/04 13:06:18 by fulguritu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,9 @@ NAME	:=	rtv1
 LFT		:=	libft.a
 
 
-PLATFORM:=	MACOS
+PLATFORM:=	LINUX
 CC		:=	gcc
-CFLAGS	:=	-Wall -Werror -Wextra -O3
+CFLAGS	:=	-Wall -Werror -Wextra -O3 -Wno-unused-result
 
 ifeq ($(PLATFORM),LINUX)
 DBFLAGS =	-fsanitize=address
@@ -46,6 +46,7 @@ SRCS	:=	camera.c			\
 			event_key.c			\
 			image_utils.c		\
 			reader.c			\
+			reader_utils.c		\
 			objects.c			\
 			rays.c				\
 			primitive_utils.c	\
@@ -53,6 +54,8 @@ SRCS	:=	camera.c			\
 			sphere.c			\
 			cylinder.c			\
 			cone.c				\
+			cube.c				\
+			paraboloid.c		\
 			shader.c			\
 			render.c
 			

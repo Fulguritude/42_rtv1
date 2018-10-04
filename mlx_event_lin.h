@@ -40,6 +40,9 @@
 # define KEY_INSERT		0xFF63
 # define KEY_DELETE		0xFFFF
 
+# define KEY_S			0x73
+# define KEY_D			0x64
+
 # define KEY_NUMPAD_0		0xFF9E
 # define KEY_NUMPAD_1		0xFF9C
 # define KEY_NUMPAD_2		0xFF99

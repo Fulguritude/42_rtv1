@@ -12,13 +12,20 @@
 
 #include "rtv1.h"
 
-static t_color			color_app_lum(t_vec_3d lum)//t_color clr, t_vec_3d lum)
+void				vec3_schur(t_vec_3d res,
+								t_vec_3d const v1, t_vec_3d const v2)
+{
+	res[0] = v1[0] * v2[0];
+	res[1] = v1[1] * v2[1];
+	res[2] = v1[2] * v2[2];
+}
+
+static t_color		color_app_lum(t_vec_3d lum)
 {
 	t_u8		red;
 	t_u8		grn;
 	t_u8		blu;
 
-//printf("lum: % .3f\n", lum);
 	red = ft_fmax(0., ft_fmin(255., lum[0]));
 	grn	= ft_fmax(0., ft_fmin(255., lum[1]));
 	blu = ft_fmax(0., ft_fmin(255., lum[2]));
@@ -27,18 +34,14 @@ static t_color			color_app_lum(t_vec_3d lum)//t_color clr, t_vec_3d lum)
 
 /*
 ** Returns the result of light and object albedo color construction
+**
+**	"vec3_scale(shdr.dirlight.dir, 1. / shdr.dirlight.t, shdr.dirlight.dir);"
+**		is
+**	"vec3_eucl_nrmlz(shdr.dirlight.dir, shdr.dirlight.dir);"
+**		but less costly in this context.
 */
 
-#if 0
-	bool inShadow = trace(shadowPointOrig, lightDir, objects, tNearShadow, index, uv, &shadowHitObject) && tNearShadow * tNearShadow < lightDistance2;
-	lightAmt += (1 - inShadow) * lights[i]->intensity * LdotN;
-	Vec3f reflectionDirection = reflect(-lightDir, N);
-	specularColor += powf(std::max(0.f, -dotProduct(reflectionDirection, dir)), hitObject->specularExponent) * lights[i]->intensity;
-	}
-	hitColor = lightAmt * hitObject->evalDiffuseColor(st) * hitObject->Kd + specularColor * hitObject->Ks; 
-#endif
-
-static void		shader_get_diff_n_spec(t_vec_3d reslum, t_control *ctrl,
+static void			shader_get_diff_n_spec(t_vec_3d reslum, t_control *ctrl,
 										t_shader shdr, t_light const spot)
 {
 	t_float		tmp;
@@ -48,8 +51,7 @@ static void		shader_get_diff_n_spec(t_vec_3d reslum, t_control *ctrl,
 	vec3_sub(shdr.dirlight.dir, spot.pos, shdr.dirlight.pos);
 	tmp = vec3_eucl_quadnorm(shdr.dirlight.dir);
 	shdr.dirlight.t = sqrt(tmp);
-	vec3_scale(shdr.dirlight.dir, 1. / shdr.dirlight.t, shdr.dirlight.dir); //less costly
-//	vec3_eucl_nrmlz(shdr.dirlight.dir, shdr.dirlight.dir); //is the costlier version
+	vec3_scale(shdr.dirlight.dir, 1. / shdr.dirlight.t, shdr.dirlight.dir);
 	if (trace_ray_to_objs(ctrl, shdr.dirlight, NULL, NULL))
 	{
 		vec3_set(reslum, 0., 0., 0.);
@@ -58,22 +60,16 @@ static void		shader_get_diff_n_spec(t_vec_3d reslum, t_control *ctrl,
 	if (ctrl->show_diffuse)
 		vec3_scale(reslum, INV_PI * spot.intensity * ft_fmax(0.,
 			vec3_dot(shdr.normal, shdr.dirlight.dir)) / tmp, shdr.obj_albedo);
-	vec3_set(reslum, reslum[0] * spot.rgb[0], reslum[1] * spot.rgb[1], reslum[2] * spot.rgb[2]); //schur/hadamard product ?
+	vec3_schur(reslum, reslum, spot.rgb);
 	vec3_scale(ref, -1., shdr.dirlight.dir);
 	get_reflect(ref, ref, shdr.normal);
 	tmp = ft_fmax(0., -vec3_dot(ref, shdr.objray_dir));
-	vec3_set(spec, powf(tmp, shdr.obj_specul[0]), powf(tmp, shdr.obj_specul[1]), powf(tmp, shdr.obj_specul[2]));
-	vec3_set(spec, spec[0] * spot.rgb[0], spec[1] * spot.rgb[1], spec[2] * spot.rgb[2]);
+	vec3_set(spec, powf(tmp, shdr.obj_specul[0]),
+		powf(tmp, shdr.obj_specul[1]), powf(tmp, shdr.obj_specul[2]));
+	vec3_schur(spec, spec, spot.rgb);
 	if (ctrl->show_specular)
 		vec3_add(reslum, reslum, spec);
 }
-
-/*
-static void		shader_get_specular(t_vec_3d reslum, t_control *ctrl,
-										t_shader shdr, t_light const spot)
-{
-	return ;
-}*/
 
 /*
 ** Principle: you cast a ray from the point of contact in question to the light
@@ -82,7 +78,7 @@ static void		shader_get_specular(t_vec_3d reslum, t_control *ctrl,
 ** then the contact point is hidden from the light source
 */
 
-t_color			get_color_from_fixed_objray(t_control *ctrl,
+t_color				get_color_from_fixed_objray(t_control *ctrl,
 							t_object const obj, t_ray const objray)
 {
 	t_shader	shdr;

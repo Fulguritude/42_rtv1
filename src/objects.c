@@ -22,8 +22,12 @@ static t_inter_func		get_inter_func(t_objtype const type)
 	res = type == infcylinder ? &intersect_ray_infcylinder : res;
 	res = type == disk ? &intersect_ray_disk : res;
 	res = type == square ? &intersect_ray_square : res;
+	res = type == triangle ? &intersect_ray_triangle : res;
 	res = type == cone ? &intersect_ray_cone : res;
 	res = type == cylinder ? &intersect_ray_cylinder : res;
+	res = type == paraboloid ? &intersect_ray_paraboloid : res;
+	res = type == saddle ? &intersect_ray_saddle : res;
+	res = type == cube ? &intersect_ray_cube : res;
 	return (res);
 }
 
@@ -36,7 +40,11 @@ static t_hnn_func		get_hnn_func(t_objtype const type)
 	res = type == infcylinder ? &get_hnn_infcylinder : res;
 	res = type == cone ? &get_hnn_cone : res;
 	res = type == cylinder ? &get_hnn_cylinder : res;
-	res = type == plane || type == disk || type == square ? get_hnn_plane : res;
+	res = type == plane || type == disk || type == square || type == triangle ?
+			get_hnn_plane : res;
+	res = type == paraboloid ? &get_hnn_paraboloid : res;
+	res = type == saddle ? &get_hnn_saddle : res;
+	res = type == cube ? &get_hnn_cube : res;
 	return (res);
 }
 

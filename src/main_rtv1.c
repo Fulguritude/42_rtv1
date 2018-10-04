@@ -52,30 +52,6 @@ static void		init_mlx(t_control *ctrl)
 	ctrl->debug = 1;
 }
 
-/*
-** MASK_POINTERMOTION returns true when the mouse moves, when no button is
-**		clicked;
-*/
-/*
-static void		init_mouse_events(t_control *ctrl)
-{
-	int		event;
-	int		mask;
-
-	mlx_key_hook(ctrl->win_ptr, &handle_key, ctrl);
-	mask = MASK_POINTERMOTION | MASK_BUTTON1MOTION |
-				MASK_BUTTON2MOTION | MASK_BUTTON3MOTION;
-	event = EVENT_MOTIONNOTIFY;
-	mlx_hook(ctrl->win_ptr, event, mask, handle_mouse_move, ctrl);
-	mask = MASK_BUTTONPRESS;
-	event = EVENT_BUTTONPRESS;
-	mlx_hook(ctrl->win_ptr, event, mask, handle_mouse_press, ctrl);
-	mask = MASK_BUTTONRELEASE;
-	event = EVENT_BUTTONRELEASE;
-	mlx_hook(ctrl->win_ptr, event, mask, handle_mouse_release, ctrl);
-}
-*/
-
 int		main(int argc, char **argv)
 {
 	t_control	ctrl;
@@ -91,12 +67,11 @@ int		main(int argc, char **argv)
 	ctrl.show_specular = TRUE;
 
 	read_rt_file(&ctrl, argv[1]);
-	//init_objects(&ctrl);	
 
 	mlx_key_hook(ctrl.win_ptr, handle_key, &ctrl);
-	mlx_expose_hook(ctrl.win_ptr, handle_redraw, &ctrl);
 
 	render(&ctrl);
+	mlx_expose_hook(ctrl.win_ptr, handle_redraw, &ctrl);
 
 
 	mlx_loop(ctrl.mlx_ptr);

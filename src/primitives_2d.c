@@ -66,7 +66,7 @@ t_bool		intersect_ray_square(t_ray *objray)
 	t_ray		tmp_ray;
 	t_float		tmp_x;
 	t_float		tmp_z;
-	
+
 	tmp_ray = *objray;
 	if (intersect_ray_plane(&tmp_ray))
 	{
@@ -74,6 +74,33 @@ t_bool		intersect_ray_square(t_ray *objray)
 		tmp_z = tmp_ray.pos[2] + tmp_ray.t * tmp_ray.dir[2];
 		if (-0.5 <= tmp_x && tmp_x <= 0.5 &&
 			-0.5 <= tmp_z && tmp_z <= 0.5)
+		{
+			objray->t = tmp_ray.t;
+			return (TRUE);
+		}
+	}
+	return (FALSE);
+}
+
+/*
+** The triangle primitive is {[-0.5]_x ; [0.5]_x ; [1.0]_z}
+*/
+
+t_bool		intersect_ray_triangle(t_ray *objray)
+{
+	t_ray		tmp_ray;
+	t_float		tmp_x;
+	t_float		tmp_z;
+	t_float		tmp_zby2;
+	
+	tmp_ray = *objray;
+	if (intersect_ray_plane(&tmp_ray))
+	{
+		tmp_x = tmp_ray.pos[0] + tmp_ray.t * tmp_ray.dir[0];
+		tmp_z = tmp_ray.pos[2] + tmp_ray.t * tmp_ray.dir[2];
+		tmp_zby2 = tmp_z / 2.;
+		if (0. <= tmp_z && tmp_z <= 1. &&
+			-tmp_zby2 <= tmp_x && tmp_x <= tmp_zby2)
 		{
 			objray->t = tmp_ray.t;
 			return (TRUE);
