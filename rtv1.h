@@ -125,7 +125,7 @@ typedef struct	s_shader
 ** All primitives are considered to be centered near the origin with default
 ** unit dimensions.
 */
-typedef	enum	e_objtype
+typedef enum	e_objtype
 {
 	null_obj,
 	light,
@@ -178,8 +178,8 @@ typedef	enum	e_objtype
 **					called
 */
 
-typedef			t_bool (*t_inter_func)(t_ray *objray);
-typedef			void (*t_hnn_func)(t_vec_3d hp, t_vec_3d nml, t_ray const objr);
+typedef t_bool	(*t_inter_func)(t_ray *objray);
+typedef void	(*t_hnn_func)(t_vec_3d hp, t_vec_3d nml, t_ray const objr);
 
 typedef struct	s_object
 {

@@ -124,5 +124,8 @@ void						get_hnn_saddle(t_vec_3d hitpos,
 {
 	get_ray_hitpos(hitpos, objray);
 	vec3_set(normal, 2. * hitpos[0], -1., -2. * hitpos[2]);
+	if (objray.pos[0] * objray.pos[0] - objray.pos[2] * objray.pos[2]
+				<= objray.pos[1])
+		vec3_scale(normal, -1., normal);
 	vec3_eucl_nrmlz(normal, normal);
 }

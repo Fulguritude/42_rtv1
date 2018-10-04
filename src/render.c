@@ -29,15 +29,6 @@ static void		show_debug_info(t_control *ctrl)
 		ctrl->cam.world_pos[0], ctrl->cam.world_pos[1], ctrl->cam.world_pos[2]);
 	mlx_string_put(ctrl->mlx_ptr, ctrl->win_ptr, 20, 60, WHITE, str);
 	ft_strdel(&str);
-//	ft_asprintf(&str, "", );
-//	mlx_string_put(ctrl->mlx_ptr, ctrl->win_ptr, 20, 60, WHITE, str);
-//	ft_strdel(&str);
-//	ft_asprintf(&str, "h_ratio: %.4f", ctrl->fdf.h_scale);
-//	mlx_string_put(ctrl->mlx_ptr, ctrl->win_ptr,
-//		HALF_DRENWIN_WIDTH + 20, 80, WHITE, str);
-//	ft_strdel(&str);
-//	mlx_string_put(ctrl->mlx_ptr, ctrl->win_ptr, HALF_DRENWIN_WIDTH + 20,
-//		100, GREEN, str);
 }
 
 int				handle_redraw(void *param)
@@ -55,11 +46,8 @@ void			render(t_control *ctrl)
 {
 	mlximg_fill(ctrl, BG_COLOR);
 	ctrl->cam = init_cam(ctrl->cam.polar_pos, ctrl->cam.anchor);
-
 	cast_rays(ctrl);
 	mlx_put_image_to_window(ctrl->mlx_ptr, ctrl->win_ptr, ctrl->img_ptr, 0, 0);
-
 	if (ctrl->debug)
 		show_debug_info(ctrl);
-	
 }

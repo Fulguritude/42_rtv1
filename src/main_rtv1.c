@@ -52,30 +52,22 @@ static void		init_mlx(t_control *ctrl)
 	ctrl->debug = 1;
 }
 
-int		main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	t_control	ctrl;
 
 	if (argc != 2)
 		exit_error("rtv1 usage: \"./rtv1 [filepath]\"", 0);
 	init_mlx(&ctrl);
-
 	vec3_set(ctrl.cam.polar_pos, 10., HALF_PI, HALF_PI);
 	ctrl.spotlst_len = 0;
 	ctrl.objlst_len = 0;
 	ctrl.show_diffuse = TRUE;
 	ctrl.show_specular = TRUE;
-
 	read_rt_file(&ctrl, argv[1]);
-
-	mlx_key_hook(ctrl.win_ptr, handle_key, &ctrl);
-
 	render(&ctrl);
+	mlx_key_hook(ctrl.win_ptr, handle_key, &ctrl);
 	mlx_expose_hook(ctrl.win_ptr, handle_redraw, &ctrl);
-
-
 	mlx_loop(ctrl.mlx_ptr);
-
-
 	return (0);
 }

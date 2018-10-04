@@ -42,7 +42,7 @@ t_bool		intersect_ray_disk(t_ray *objray)
 	t_ray		tmp_ray;
 	t_float		tmp_x;
 	t_float		tmp_z;
-	
+
 	tmp_ray = *objray;
 	if (intersect_ray_plane(&tmp_ray))
 	{
@@ -92,7 +92,7 @@ t_bool		intersect_ray_triangle(t_ray *objray)
 	t_float		tmp_x;
 	t_float		tmp_z;
 	t_float		tmp_zby2;
-	
+
 	tmp_ray = *objray;
 	if (intersect_ray_plane(&tmp_ray))
 	{
