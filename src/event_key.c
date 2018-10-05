@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/14 20:49:10 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 14:24:37 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/05 07:58:46 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ t_bool		handle_key_helper(t_control *ctrl, int key)
 		ctrl->cam.polar_pos[2] -= 0.1;
 	else if (key == KEY_UP && ctrl->cam.polar_pos[2] + 0.1 < PI + 0.00001)
 		ctrl->cam.polar_pos[2] += 0.1;
+	else if (key == KEY_J && ctrl->cam.hrz_fov - 0.05 > 0.)
+		ctrl->cam.hrz_fov -= 0.05;
+	else if (key == KEY_K && ctrl->cam.hrz_fov + 0.05 < TAU)
+		ctrl->cam.hrz_fov += 0.05;
 	else if (key == KEY_D)
 		ctrl->show_diffuse = !(ctrl->show_diffuse);
 	else if (key == KEY_S)

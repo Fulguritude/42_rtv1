@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 00:08:48 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 13:22:15 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/05 07:45:30 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int				handle_redraw(void *param)
 void			render(t_control *ctrl)
 {
 	mlximg_fill(ctrl, BG_COLOR);
-	ctrl->cam = init_cam(ctrl->cam.polar_pos, ctrl->cam.anchor);
+	ctrl->cam = init_cam(ctrl->cam.polar_pos, ctrl->cam.anchor,
+								ctrl->cam.hrz_fov);
 	cast_rays(ctrl);
 	mlx_put_image_to_window(ctrl->mlx_ptr, ctrl->win_ptr, ctrl->img_ptr, 0, 0);
 	if (ctrl->debug)

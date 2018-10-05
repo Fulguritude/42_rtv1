@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 00:31:44 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/07/19 15:23:48 by tduquesn         ###   ########.fr       */
+/*   Updated: 2018/10/05 07:44:51 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static void		cam_build_matrices(t_camera *cam)
 	ft_memcpy(cam->w_to_c, result, T_MAT44_SIZE);
 }
 
-t_camera		init_cam(t_vec_3d polar_cam_pos, t_vec_3d anchor)
+t_camera		init_cam(t_vec_3d polar_cam_pos, t_vec_3d anchor,
+						t_float fov)
 {
 	t_camera	result;
 
@@ -55,7 +56,7 @@ t_camera		init_cam(t_vec_3d polar_cam_pos, t_vec_3d anchor)
 	vec3_cross(result.axis_x, result.axis_y, result.axis_z);
 	vec3_eucl_nrmlz(result.axis_x, result.axis_x);
 	vec3_cross(result.axis_y, result.axis_x, result.axis_z);
-	result.hrz_fov = INIT_FOV;
+	result.hrz_fov = fov;
 	cam_build_matrices(&result);
 	return (result);
 }

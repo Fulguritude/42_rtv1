@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/03 15:56:55 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/05 08:00:24 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include "libft/hdr/libft_algebra.h"
 # include "libft/hdr/ft_printf.h"
 # include "libft/hdr/get_next_line.h"
-# include "mlx_event_lin.h"
+# include "mlx_event_mac.h"
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -253,7 +253,8 @@ void			r_rt_f_set_cam(t_control *ctrl, int fd);
 **
 ** static void		build_cam_matrices(t_mat_4b4 result, t_camera const cam);
 */
-t_camera		init_cam(t_vec_3d polar_cam_pos, t_vec_3d anchor);
+t_camera		init_cam(t_vec_3d polar_cam_pos, t_vec_3d anchor,
+							t_float hrz_fov);
 
 /*
 ** render.c

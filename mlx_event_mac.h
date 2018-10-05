@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/29 01:19:28 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 14:19:22 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/05 07:52:43 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@
 
 # define KEY_S			0x01
 # define KEY_D			0x02
+# define KEY_I			0x22
+# define KEY_P			0x23
+# define KEY_L			0x25
+# define KEY_J			0x26
+# define KEY_K			0x28
 
 # define KEY_NUMPAD_0			0x52
 # define KEY_NUMPAD_1			0x53

@@ -6,7 +6,7 @@
 #    By: tduquesn <tduquesn@42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 21:33:56 by tduquesn          #+#    #+#              #
-#    Updated: 2018/10/04 13:06:18 by fulguritu        ###   ########.fr        #
+#    Updated: 2018/10/05 07:59:56 by fulguritu        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	:=	rtv1
 LFT		:=	libft.a
 
 
-PLATFORM:=	LINUX
+PLATFORM:=	MACOS
 CC		:=	gcc
 CFLAGS	:=	-Wall -Werror -Wextra -O3 -Wno-unused-result
 
