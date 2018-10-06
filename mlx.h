@@ -170,10 +170,12 @@ int				mlx_put_image_to_window(
 	int x,
 	int y);
 /*
-**	Depending on the display, the number of bits used to store a pixel color can change.
+**	Depending on the display, the number of bits used to store a pixel
+**		color can change.
 **	The most common is 32-bit RGB mode, using one byte for each color channel.
-**	This must be converted to fit the bits_per_pixel requirement of the image at hand,
-**	and make the color format understandable to the underlying X-Server.
+**	This must be converted to fit the bits_per_pixel requirement of the
+**		image at hand, and make the color format understandable to the
+**		underlying X-Server.
 **	- mlx_ptr:	the identifier returned by mlx_init()
 **	- color:	the color value to convert
 **	returns the 'bpp' least significant bits of the given color value
@@ -211,7 +213,7 @@ void			*mlx_xpm_file_to_image(
 **	- mlx_ptr:	the identifier returned by mlx_init()
 **	returns 1 if an error occurred ?
 */
-int	mlx_loop(void *mlx_ptr);
+int				mlx_loop(void *mlx_ptr);
 /*
 **	These 4 functions work in the exact same way.
 **	'key' is for any keyboard events, 'mouse' for mouse events
@@ -219,14 +221,15 @@ int	mlx_loop(void *mlx_ptr);
 **	They set up the event checking, and  ld bbe called before mlx_loop()
 **	- win_ptr:		the identifier returned by mlx_new_window()
 **					(note that the event is specific to this window)
-**	- funct_ptr:	the pointer to the function you wish to call when an event occurs.
+**	- funct_ptr:	the pointer to the function you wish to call when an event
+**					occurs.
 **	- param:		this will be passed to the function everytime it is called,
 **					and should be used to store any parameters it might need
 */
-int	mlx_loop_hook	(void *mlx_ptr, int (*funct_ptr)(), void *param);
-int	mlx_key_hook	(void *win_ptr, int (*funct_ptr)(), void *param);
-int	mlx_mouse_hook	(void *win_ptr, int (*funct_ptr)(), void *param);
-int	mlx_expose_hook (void *win_ptr, int (*funct_ptr)(), void *param);
+int				mlx_loop_hook(void *mlx_ptr, int (*funct_ptr)(), void *param);
+int				mlx_key_hook(void *win_ptr, int (*funct_ptr)(), void *param);
+int				mlx_mouse_hook(void *win_ptr, int (*funct_ptr)(), void *param);
+int				mlx_expose_hook(void *win_ptr, int (*funct_ptr)(), void *param);
 /*
 **	The user-side event handling functions are defined thusly:
 **	(the names given here are arbitrary, you can name them however you want)
@@ -239,15 +242,15 @@ int	mlx_expose_hook (void *win_ptr, int (*funct_ptr)(), void *param);
 /*
 **	???
 */
-int	mlx_do_sync(void *mlx_ptr);
+int				mlx_do_sync(void *mlx_ptr);
 /*
 ** Disables the keyboard's auto-repeat.
 */
-int	mlx_do_key_autorepeatoff(void *mlx_ptr);
+int				mlx_do_key_autorepeatoff(void *mlx_ptr);
 /*
 ** Enables the keyboard's auto-repeat feature.
 */
-int	mlx_do_key_autorepeaton(void *mlx_ptr);
+int				mlx_do_key_autorepeaton(void *mlx_ptr);
 
 /*
 **  A generic hook system for any X event,
@@ -261,11 +264,11 @@ int	mlx_do_key_autorepeaton(void *mlx_ptr);
 **	- param:	this will be passed to the function everytime it is called,
 **				and should be used to store any parameters it might need
 */
-int	mlx_hook(
+int				mlx_hook(
 	void *win_ptr,
 	int x_event,
 	int x_mask,
 	int (*funct)(),
 	void *param);
 
-#endif /* MLX_H */
+#endif

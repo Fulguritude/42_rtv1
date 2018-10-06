@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/04 10:16:45 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/04 10:16:53 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/06 12:55:53 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_bool						intersect_ray_paraboloid(t_ray *objray)
 ** To find the normal of a parabola, consider the fact that a parabola is a
 ** manifold and can thus be described as though its calculus form.
 **
-** Our scalar function for our hypersurface is f(x, y, z) = x^2 - y + z^2 
+** Our scalar function for our hypersurface is f(x, y, z) = x^2 - y + z^2
 ** Its jacobian matrix is thus the 1×3 matrix [ 2x, -1, 2z ]
 */
 
@@ -95,7 +95,7 @@ t_bool						intersect_ray_saddle(t_ray *objray)
 					- objray->dir[2] * objray->dir[2];
 	quadpoly[1] = 2 * (objray->dir[0] * objray->pos[0]
 					- objray->dir[2] * objray->pos[2]) - objray->dir[1];
-	quadpoly[2] = objray->pos[0] * objray->pos[0] 
+	quadpoly[2] = objray->pos[0] * objray->pos[0]
 					- objray->pos[2] * objray->pos[2] - objray->pos[1];
 	if (!(get_realroots_quadpoly(&root1, &root2, quadpoly)))
 		return (FALSE);
@@ -115,7 +115,7 @@ t_bool						intersect_ray_saddle(t_ray *objray)
 ** To find the normal of a parabola, consider the fact that a parabola is a
 ** manifold and can thus be described as though its calculus form.
 **
-** Our scalar function for our hypersurface is f(x, y, z) = x^2 - y - z^2 
+** Our scalar function for our hypersurface is f(x, y, z) = x^2 - y - z^2
 ** Its jacobian matrix is thus the 1×3 matrix [ 2x, -1, -2z ]
 */
 

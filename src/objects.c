@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/21 03:50:29 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 16:40:18 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/06 14:22:32 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,9 @@ void					build_obj(t_object *obj, t_objtype type)
 	mat44_set(obj->o_to_w, rot, (t_vec_3d){0, 0, 0},
 					(t_vec_4d){obj->pos[0], obj->pos[1], obj->pos[2], 1.});
 	mat44_inv(obj->w_to_o, obj->o_to_w);
-	mat44_transpose(obj->n_to_w, obj->w_to_o);
+	mat33_set(obj->n_to_w,
+		(t_vec_3d){obj->w_to_o[0], obj->w_to_o[4], obj->w_to_o[8]},
+		(t_vec_3d){obj->w_to_o[1], obj->w_to_o[5], obj->w_to_o[9]},
+		(t_vec_3d){obj->w_to_o[2], obj->w_to_o[6], obj->w_to_o[10]});
+	print_object(*obj);
 }

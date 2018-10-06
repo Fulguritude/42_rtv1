@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/28 01:05:01 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 11:48:03 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/06 12:26:33 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ inline void		print_object(t_object const obj)
 			obj.specul[0], obj.specul[1], obj.specul[2]);
 	print_mat44("o_to_w", obj.o_to_w);
 	print_mat44("w_to_o", obj.w_to_o);
-	print_mat33("lin_w_to_o", obj.linear_w_to_o);
 	print_mat33("lin_o_to_w", obj.linear_o_to_w);
-	print_mat44("n_to_w", obj.o_to_w);
+	print_mat33("lin_w_to_o", obj.linear_w_to_o);
+	print_mat33("n_to_w", obj.n_to_w);
 }

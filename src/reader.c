@@ -6,12 +6,11 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/01 06:00:02 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 16:45:31 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/06 12:58:48 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
-
 
 static t_bool		read_rt_file_context_line2(t_control *ctrl,
 												char const *str, int fd)

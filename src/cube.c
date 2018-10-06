@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/01 16:54:51 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 17:19:25 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/06 12:50:11 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ t_bool				intersect_ray_cube(t_ray *objray)
 	return (objray->t == tmp);
 }
 
-
-void						get_hnn_cube(t_vec_3d hitpos,
+void				get_hnn_cube(t_vec_3d hitpos,
 								t_vec_3d normal, t_ray const objray)
 {
 	get_ray_hitpos(hitpos, objray);

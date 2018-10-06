@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/27 19:23:31 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 16:46:47 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/06 12:52:59 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static inline t_float	vec3_yneg_dot(t_vec_3d const v1, t_vec_3d const v2)
 **	(dx^2 + dz^2 - dy^2)		* t^2				== 0
 */
 
-t_bool			intersect_ray_infcone(t_ray *objray)
+t_bool					intersect_ray_infcone(t_ray *objray)
 {
 	t_vec_3d	quadpoly;
 	t_float		root1;
@@ -73,7 +73,7 @@ t_bool			intersect_ray_infcone(t_ray *objray)
 ** the point of the cone.
 */
 
-t_bool			intersect_ray_cone(t_ray *objray)
+t_bool					intersect_ray_cone(t_ray *objray)
 {
 	t_ray		tmp_ray;
 	t_float		tmp;
@@ -103,7 +103,7 @@ t_bool			intersect_ray_cone(t_ray *objray)
 **	version of the normal at hitpos.
 */
 
-void			get_hnn_infcone(t_vec_3d hitpos, t_vec_3d normal,
+void					get_hnn_infcone(t_vec_3d hitpos, t_vec_3d normal,
 									t_ray const objray)
 {
 	get_ray_hitpos(hitpos, objray);
@@ -111,8 +111,7 @@ void			get_hnn_infcone(t_vec_3d hitpos, t_vec_3d normal,
 	vec3_eucl_nrmlz(normal, normal);
 }
 
-
-void			get_hnn_cone(t_vec_3d hitpos, t_vec_3d normal,
+void					get_hnn_cone(t_vec_3d hitpos, t_vec_3d normal,
 									t_ray const objray)
 {
 	get_ray_hitpos(hitpos, objray);

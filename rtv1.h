@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/05 08:00:24 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/06 12:46:22 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef t_u32	t_color;
 /*
 ** CAMERA
 **
-** world_pos		: cartesian coordinate of camera in world 
+** world_pos		: cartesian coordinate of camera in world
 **						(world = anchor + relative)
 ** reltv_pos		: cartesian coordinate of camera with anchor as center
 ** polar_pos		: zoom/radius, longitude, latitude relative to anchor
@@ -189,11 +189,11 @@ typedef struct	s_object
 	t_vec_3d		rot;
 	t_vec_3d		albedo;
 	t_vec_3d		specul;
-	t_mat_3b3		linear_o_to_w;
-	t_mat_3b3		linear_w_to_o;
 	t_mat_4b4		o_to_w;
 	t_mat_4b4		w_to_o;
-	t_mat_4b4		n_to_w;
+	t_mat_3b3		linear_o_to_w;
+	t_mat_3b3		linear_w_to_o;
+	t_mat_3b3		n_to_w;
 	t_inter_func	intersect;
 	t_hnn_func		get_hnn;
 }				t_object;
@@ -237,7 +237,7 @@ void			mlximg_clear(t_control *ctrl);
 ** reader.c
 */
 void			read_rt_file(t_control *ctrl, char const *fpath);
- 
+
 /*
 ** reader_utils.c
 **
@@ -246,7 +246,6 @@ void			read_rt_file(t_control *ctrl, char const *fpath);
 void			r_rt_f_setup_light(t_control *ctrl, int fd);
 void			r_rt_f_set_obj(t_control *ctrl, int fd, t_objtype type);
 void			r_rt_f_set_cam(t_control *ctrl, int fd);
-
 
 /*
 ** camera.c
