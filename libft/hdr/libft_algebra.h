@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/20 18:44:44 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 11:54:03 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/09 15:07:35 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@
 # include <unistd.h>
 # include "libft_math.h"
 
-#ifdef _FLOAT_32_
-# define T_VEC3_SIZE		12
-# define T_VEC4_SIZE		16
-# define T_MAT33_SIZE		36
-# define T_MAT44_SIZE		64
-#endif
+# ifdef _FLOAT_32_
+#  define T_VEC3_SIZE		12
+#  define T_VEC4_SIZE		16
+#  define T_MAT33_SIZE		36
+#  define T_MAT44_SIZE		64
+# endif
 
-#ifdef _FLOAT_64_
-# define T_VEC3_SIZE		24
-# define T_VEC4_SIZE		32
-# define T_MAT33_SIZE		72
-# define T_MAT44_SIZE		128
-#endif
+# ifdef _FLOAT_64_
+#  define T_VEC3_SIZE		24
+#  define T_VEC4_SIZE		32
+#  define T_MAT33_SIZE		72
+#  define T_MAT44_SIZE		128
+# endif
 
 /*
 **	[ 0 ]

@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/29 07:05:34 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/06 14:11:24 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/09 15:11:15 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ static t_color		color_app_lum(t_vec_3d lum)
 **		is
 **	"vec3_eucl_nrmlz(shdr.dirlight.dir, shdr.dirlight.dir);"
 **		but less costly in this context.
+**
+**	//	vec3_set(reslum, 0., 0., 0.); should be added unless set in previous
+**			function.
 */
 
 static void			shader_get_diff_n_spec(t_vec_3d reslum, t_control *ctrl,
@@ -48,7 +51,6 @@ static void			shader_get_diff_n_spec(t_vec_3d reslum, t_control *ctrl,
 	t_vec_3d	ref;
 	t_vec_3d	spec;
 
-//	vec3_set(reslum, 0., 0., 0.);
 	vec3_sub(shdr.dirlight.dir, spot.pos, shdr.dirlight.pos);
 	tmp = vec3_eucl_quadnorm(shdr.dirlight.dir);
 	shdr.dirlight.t = sqrt(tmp);

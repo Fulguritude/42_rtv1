@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/26 02:25:16 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 11:54:50 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/09 15:13:34 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void		print_mat33(char const *title, t_mat_3b3 const mat)
 		mat[3], mat[4], mat[5],
 		mat[6], mat[7], mat[8]);
 }
-
 
 void		print_mat44(char const *title, t_mat_4b4 const mat)
 {

@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/01 10:10:53 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 10:12:21 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/09 15:13:19 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ t_float			mat33_det(t_mat_3b3 const m)
 
 /*
 ** M^-1 = 1/det * adj(m) and adj(m) = comat(m^transpose)
-** TODO debug
 */
 
 void			mat33_inv(t_mat_3b3 result, t_mat_3b3 const m)
@@ -52,5 +51,3 @@ void			mat33_inv(t_mat_3b3 result, t_mat_3b3 const m)
 	ft_memcpy(result, tmp, sizeof(tmp));
 	mat33_scale(result, 1. / det, result);
 }
-
-

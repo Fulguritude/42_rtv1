@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/30 14:16:11 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/05/30 14:16:24 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/09 15:15:02 by tduquesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ inline t_float	vec3_dot(t_vec_3d const v1, t_vec_3d const v2)
 	return (v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]);
 }
 
-void			vec3_cross(t_vec_3d result, t_vec_3d const v1, t_vec_3d const v2)
+void			vec3_cross(t_vec_3d result,
+							t_vec_3d const v1, t_vec_3d const v2)
 {
 	t_vec_3d tmp;
 
