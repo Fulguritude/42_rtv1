@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 17:34:32 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/06 12:46:22 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/06 16:27:20 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,7 @@ typedef struct	s_control
 	int				endian;
 	char			*img_data;
 	t_camera		cam;
+	t_float			render_dist;
 	t_bool			debug;
 	t_bool			show_diffuse;
 	t_bool			show_specular;

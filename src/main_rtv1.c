@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 20:27:46 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/05 07:43:55 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/06 16:30:12 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int				main(int argc, char **argv)
 	ctrl.show_diffuse = TRUE;
 	ctrl.show_specular = TRUE;
 	ctrl.cam.hrz_fov = INIT_FOV;
+	ctrl.render_dist = 1.e+6;
 	read_rt_file(&ctrl, argv[1]);
 	render(&ctrl);
 	mlx_key_hook(ctrl.win_ptr, handle_key, &ctrl);
