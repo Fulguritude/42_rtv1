@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/16 23:00:36 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/01 10:05:33 by fulguritu        ###   ########.fr       */
+/*   Updated: 2018/10/18 18:13:23 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void			cast_rays(t_control *ctrl)
 		while (++j < REN_W)
 		{
 			vec3_cpy(ray.pos, ctrl->cam.world_pos);
-			ray.t = 1. / 0.;
+			ray.t = ctrl->render_dist;
 			vec3_set(ray.dir, j - REN_W / 2, i - REN_H / 2, fov_val);
 			mat44_app_vec3(ray.dir, ctrl->cam.c_to_w, ray.dir);
 			vec3_eucl_nrmlz(ray.dir, ray.dir);

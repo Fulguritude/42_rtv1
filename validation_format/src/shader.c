@@ -6,7 +6,7 @@
 /*   By: fulguritude <marvin@42.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/29 07:05:34 by fulguritu         #+#    #+#             */
-/*   Updated: 2018/10/09 15:11:15 by tduquesn         ###   ########.fr       */
+/*   Updated: 2018/10/18 18:06:47 by fulguritu        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ t_color				get_color_from_fixed_objray(t_control *ctrl,
 	int			i;
 
 	obj.get_hnn(shdr.dirlight.pos, shdr.normal, objray);
-	vec3_scale(lum, APPROX, shdr.normal);
-	vec3_add(shdr.dirlight.pos, shdr.dirlight.pos, lum);
+	vec3_scale(tmp, APPROX, shdr.normal);
+	vec3_add(shdr.dirlight.pos, shdr.dirlight.pos, tmp);
 	mat44_app_vec3(shdr.dirlight.pos, obj.o_to_w, shdr.dirlight.pos);
 	mat33_mul(shdr.normal, obj.n_to_w, shdr.normal);
 	vec3_eucl_nrmlz(shdr.normal, shdr.normal);
