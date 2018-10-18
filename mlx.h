@@ -1,9 +1,9 @@
 /*
 ** mlx.h for MinilibX
-** 
+**
 ** Made by Charlie Root
 ** Login   <ol@epitech.net>
-** 
+**
 ** Started on  Mon Jul 31 16:37:50 2000 Charlie Root
 ** Last update Tue May 15 16:23:28 2007 Olivier Crouzet
 */
@@ -186,7 +186,8 @@ unsigned int	mlx_get_color_value(
 /*
 **	These 2 functions will create a new image in the same way.
 **	They will fill it using the specified 'xpm_data' or 'filename'.
-**	Note that MiniLibX does not use the standard Xpm library to deal with xpm images.
+**	Note that MiniLibX does not use the standard Xpm library to deal
+**		with xpm images.
 **	As such, you may not be able to read all types of xpm images.
 **	This function does, however, handle transparency.
 **	They both return the identifer for this newly loaded image
@@ -201,7 +202,6 @@ void			*mlx_xpm_file_to_image(
 	char const *filename,
 	int *width,
 	int *height);
-
 
 /*
 ** === Event functions ===
